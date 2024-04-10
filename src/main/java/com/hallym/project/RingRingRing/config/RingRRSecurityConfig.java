@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -16,18 +17,22 @@ import com.hallym.project.RingRingRing.filter.LoginFilter;
 import com.hallym.project.RingRingRing.jwt.JWTFilter;
 import com.hallym.project.RingRingRing.jwt.JWTUtil;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class RingRRSecurityConfig {
 
 	private final AuthenticationConfiguration authenticationConfiguration;
+	private final AuthenticationEntryPoint entryPoint;
 	private final JWTUtil jwtUtil;
 
-	public RingRRSecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil) {
-
-        this.authenticationConfiguration = authenticationConfiguration;
-        this.jwtUtil = jwtUtil;
-    }
+//	public RingRRSecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil) {
+//
+//        this.authenticationConfiguration = authenticationConfiguration;
+//        this.jwtUtil = jwtUtil;
+//    }
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -57,8 +62,10 @@ public class RingRRSecurityConfig {
 				.requestMatchers("/aicall").hasRole("AI_CALL")
 				.anyRequest().authenticated());
 		http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration),jwtUtil), UsernamePasswordAuthenticationFilter.class);
+		http.exceptionHandling(handler -> handler.authenticationEntryPoint(entryPoint));
 
 		return http.build();
 	}
 
 }
+

@@ -19,6 +19,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.hallym.project.RingRingRing.customexception.IDOverlapException;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.SignatureException;
+
 @ControllerAdvice
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler{
 	
@@ -53,10 +57,35 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 		return new ResponseEntity<>(errorDetails,HttpStatus.BAD_REQUEST);
 	}
 
-	@ExceptionHandler(TokenPeriodException.class)
-	public final ResponseEntity<ErrorDetails> handleTokenPeriodException(Exception ex, WebRequest request)throws Exception{
-		ErrorDetails errorDetails = new ErrorDetails(LocalDate.now(), ex.getMessage(), request.getDescription(false));
-		return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.FORBIDDEN);
-	}
-
+//	@ExceptionHandler(TokenPeriodException.class)
+//	public final ResponseEntity<ErrorDetails> handleTokenPeriodException(Exception ex, WebRequest request)throws Exception{
+//		ErrorDetails errorDetails = new ErrorDetails(LocalDate.now(), ex.getMessage(), request.getDescription(false));
+//		return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.FORBIDDEN);
+//	}
+//	
+//	@ExceptionHandler(NoAuthenticationException.class)
+//	public final ResponseEntity<ErrorDetails> handleNoAuthenticationException(Exception ex, WebRequest request)throws Exception{
+//		ErrorDetails errorDetails = new ErrorDetails(LocalDate.now(), ex.getMessage(), request.getDescription(false));
+//		return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.UNAUTHORIZED);
+//	}
+    @ExceptionHandler(SignatureException.class)
+    public ResponseEntity<ErrorDetails> handleSignatureException(Exception ex, WebRequest request) {
+    	ErrorDetails errorDetails = new ErrorDetails(LocalDate.now(), "JWT가 변조되었습니다.", request.getDescription(false));
+    	return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.UNAUTHORIZED);
+//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.error("토큰이 유효하지 않습니다."));
+    }
+ 
+    @ExceptionHandler(MalformedJwtException.class)
+    public ResponseEntity<ErrorDetails> handleMalformedJwtException(Exception ex, WebRequest request) {
+    	ErrorDetails errorDetails = new ErrorDetails(LocalDate.now(), "JWT가 형식에 맞지 않거나 손상되었습니다.", request.getDescription(false));
+    	return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.UNAUTHORIZED);
+//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.error("올바르지 않은 토큰입니다."));
+    }
+ 
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<ErrorDetails> handleExpiredJwtException(Exception ex, WebRequest request) {
+    	ErrorDetails errorDetails = new ErrorDetails(LocalDate.now(), "기간이 만료되었습니다.", request.getDescription(false));
+    	return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.UNAUTHORIZED);
+//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.error("토큰이 만료되었습니다. 다시 로그인해주세요."));
+    }
 }
