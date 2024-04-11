@@ -75,7 +75,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         
         
         //토큰 생성
-        String token = jwtUtil.createJwt(username, strRoles.toString(), 30000000L);
+        String token = jwtUtil.createJwt(username, strRoles.toString(), 300L);
 
         response.setHeader("Authorization", "Bearer " + token);
     }
@@ -85,12 +85,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 	@Override
 	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException failed) throws IOException, ServletException {
-	    // ResponseEntity 생성
-	    ResponseEntity<String> responseEntity = new ResponseEntity<>("Authentication failed", HttpStatus.NOT_FOUND);
 	    
-	    response.setStatus(responseEntity.getStatusCode().value());
-	    response.getWriter().write(responseEntity.getBody());
-	    response.getWriter().flush();
+	    response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 	}
 	
 	// role을 문자렬로 변경 권한 뒤, 추가형태로
