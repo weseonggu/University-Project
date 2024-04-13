@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ScenarioRepository extends JpaRepository<ScenarioEntity, Long> {
 
-    @Query("select com.hallym.project.RingRingRing.DTO.WeeklyUsageDTO(function('yearweek', s.timestamp), sum(s.duration))" +
+    @Query("SELECT new com.hallym.project.RingRingRing.DTO.WeeklyUsageDTO(FUNCTION('yearweek', s.timestamp), SUM(s.duration))" +
             "from ScenarioEntity as s " +
             "where s.id = :id " +
             "group by function('yearweek', s.timestamp)")

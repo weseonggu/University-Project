@@ -31,5 +31,7 @@ public class ScenarioEntity {
 
     private LocalDateTime timestamp;
 
+    private int duration;
+
 
 }
