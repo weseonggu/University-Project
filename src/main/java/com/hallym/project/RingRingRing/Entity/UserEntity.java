@@ -47,6 +47,9 @@ public class UserEntity {
     @JsonIgnore
     @OneToMany(mappedBy="user",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Set<AuthorityEntity> authorities;
-	
+
+	@JsonIgnore
+	@OneToMany(mappedBy="user",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	private Set<ScenarioEntity> scenarios;
     
 }

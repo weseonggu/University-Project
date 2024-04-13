@@ -1,7 +1,9 @@
 package com.hallym.project.RingRingRing.joinmember;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import com.hallym.project.RingRingRing.repository.ScenarioRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +15,7 @@ import com.hallym.project.RingRingRing.customexception.IDOverlapException;
 import com.hallym.project.RingRingRing.message.Message;
 import com.hallym.project.RingRingRing.repository.AuthorityRepository;
 import com.hallym.project.RingRingRing.repository.UserRepository;
+import com.hallym.project.RingRingRing.DTO.WeeklyUsageDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +28,8 @@ public class JoinMembershipService {
 	private final UserRepository userRepository;
 
 	private final AuthorityRepository authorityRepository;
+
+	private final ScenarioRepository scenarioRepository;
 
 	public ResponseEntity<Message> joinService(UserEntity userInfo) {
 		
@@ -68,7 +73,7 @@ public class JoinMembershipService {
 	
 	public void find(String email){
 //		return <UserEntity>(userRepository.findByEmail(email).get(0), HttpStatus.ACCEPTED);
-		System.out.println("사용자이믈:"+userRepository.findByEmail(email).get(0).getEmail());
+		System.out.println("사용자이름:"+userRepository.findByEmail(email).get(0).getEmail());
 		System.out.println("비번: "+userRepository.findByEmail(email).get(0).getPwd());
 		
 		for (AuthorityEntity a : userRepository.findByEmail(email).get(0).getAuthorities()) {
@@ -76,6 +81,12 @@ public class JoinMembershipService {
 		}
 		
 	}
+
+	public List<WeeklyUsageDTO> getWeeklyUsageById(Long id){
+		return scenarioRepository.findWeeklyUsageById(id);
+	}
+
+
 
 
 
