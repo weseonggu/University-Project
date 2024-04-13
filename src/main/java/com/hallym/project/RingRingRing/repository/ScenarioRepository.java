@@ -13,10 +13,11 @@ import java.util.List;
 public interface ScenarioRepository extends JpaRepository<ScenarioEntity, Long> {
 
     @Query("select com.hallym.project.RingRingRing.DTO.WeeklyUsageDTO(function('yearweek', s.timestamp), sum(s.duration))" +
-            "from ScenarioEntity s "+
-            "where s.id = :id" +
-            " group by function('yearweek', s.timestamp) ")
+            "from ScenarioEntity as s " +
+            "where s.id = :id " +
+            "group by function('yearweek', s.timestamp)")
     List<WeeklyUsageDTO> findWeeklyUsageById(@Param("id") Long id);
+
 
 
 }
