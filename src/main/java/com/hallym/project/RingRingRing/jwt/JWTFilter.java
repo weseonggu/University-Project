@@ -8,7 +8,6 @@ import java.util.Set;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,7 +15,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.hallym.project.RingRingRing.Entity.AuthorityEntity;
 import com.hallym.project.RingRingRing.Entity.UserEntity;
-import com.hallym.project.RingRingRing.customexception.NoAuthenticationException;
 import com.hallym.project.RingRingRing.login.CustomUserDetails;
 
 import io.jsonwebtoken.Claims;
@@ -28,16 +26,15 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+/**
+ *  JWT토큰 유효성 검증 필터
+ */
 public class JWTFilter extends OncePerRequestFilter {
 
-	private final JWTUtil jwtUtil;
 
-	public JWTFilter(JWTUtil jwtUtil) {
-
-		this.jwtUtil = jwtUtil;
-	}
-
+	/**
+	 * 검증 메소드
+	 */
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
@@ -71,17 +68,20 @@ public class JWTFilter extends OncePerRequestFilter {
 
 			Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null,
 					customUserDetails.getAuthorities());
-
+			logger.info("JWT validation Successful: "+username+" endpoint: "+request.getRequestURI());
 			SecurityContextHolder.getContext().setAuthentication(authToken);
 
 		} catch (MalformedJwtException e) {
 			request.setAttribute("exception", e);
+			logger.error("JWT validation failed: " + e.getMessage());
 			return;
 		} catch (SignatureException e) {
 			request.setAttribute("exception", e);
+			logger.error("JWT validation failed: " + e.getMessage());
 			return;
 		}catch (ExpiredJwtException e) {
 			request.setAttribute("exception", e);
+			logger.error("JWT validation failed: " + e.getMessage());
 			return;
 		}
 		finally {

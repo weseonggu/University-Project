@@ -18,7 +18,9 @@ import com.hallym.project.RingRingRing.jwt.JWTFilter;
 import com.hallym.project.RingRingRing.jwt.JWTUtil;
 
 import lombok.RequiredArgsConstructor;
-
+/**
+ * 스필이 시큐리 설정 빈 
+ */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -28,11 +30,6 @@ public class RingRRSecurityConfig {
 	private final AuthenticationEntryPoint entryPoint;
 	private final JWTUtil jwtUtil;
 
-//	public RingRRSecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil) {
-//
-//        this.authenticationConfiguration = authenticationConfiguration;
-//        this.jwtUtil = jwtUtil;
-//    }
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -55,7 +52,7 @@ public class RingRRSecurityConfig {
 
 		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		
-		http.addFilterAfter(new JWTFilter(jwtUtil), LoginFilter.class);
+		http.addFilterAfter(new JWTFilter(), LoginFilter.class);
 
 		http.authorizeHttpRequests((auth) -> auth
 				.requestMatchers( "/login","/signup", "/emailcheck/**").permitAll()

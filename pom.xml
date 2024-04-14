@@ -76,6 +76,8 @@
 			<version>0.12.3</version>
 			<scope>runtime</scope>
 		</dependency>
+
+
 	</dependencies>
 
 	<build>
@@ -92,7 +94,41 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.3.0</version>
+            <configuration>
+                <encoding>UTF-8</encoding>
+            </configuration>
+            <executions>
+                <execution>
+                    <id>attach-javadocs</id>
+                    <goals>
+                        <goal>jar</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
 		</plugins>
 	</build>
+
+	<!-- 기존의 프로젝트 설정 -->
+
+	<profiles>
+		<profile>
+			<id>local</id>
+			<properties>
+				<spring.profiles.active>local</spring.profiles.active>
+			</properties>
+		</profile>
+		<profile>
+			<id>production</id>
+			<properties>
+				<spring.profiles.active>production</spring.profiles.active>
+			</properties>
+		</profile>
+	</profiles>
+	
 
 </project>

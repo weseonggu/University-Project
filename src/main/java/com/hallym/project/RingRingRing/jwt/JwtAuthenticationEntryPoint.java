@@ -8,7 +8,9 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+/**
+ * 필터에서 발생한 예외 Servlet으로 넘기는 코드
+ */
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     private final HandlerExceptionResolver resolver;

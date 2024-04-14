@@ -1,0 +1,22 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+  application:
+    name: RingRingRing
+  datasource:
+    url: jdbc:mysql://localhost:3306/ringdb
+    username: ringringring
+    password: ringpwd
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: update
+
+
+server:
+  port: 9090
+  
+  

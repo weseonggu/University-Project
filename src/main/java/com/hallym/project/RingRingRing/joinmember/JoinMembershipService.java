@@ -25,15 +25,22 @@ public class JoinMembershipService {
 	private final UserRepository userRepository;
 
 	private final AuthorityRepository authorityRepository;
-
+	
+	
+	/**
+	 * 회원가입 서비스
+	 * @param userInfo 컨트롤러에서 받아온 UserEntity객체 
+	 * @return 실패 or 성공
+	 */
 	public ResponseEntity<Message> joinService(UserEntity userInfo) {
 		
 		if(userRepository.existsByEmail(userInfo.getEmail())) {
-			throw new IDOverlapException("already have an ID. Please use a different ID");
+			throw new IDOverlapException("이미 사용중인 메일 입니다. 다른 메일을 사용해주세요");
 		}
 		
 		try {
 			UserEntity user = UserEntity.builder()
+					.name(userInfo.getName())
 					.email(userInfo.getEmail())
 					.pwd(passwordEncoder.encode(userInfo.getPwd()))
 					.build();
@@ -57,7 +64,11 @@ public class JoinMembershipService {
 		
 		
 	}
-
+	/**
+	 * 이메일 중복 체크
+	 * @param email 문자열 컨트롤러에서 받아온 String
+	 * @return 실패 or 성공
+	 */
 	public ResponseEntity<Message> EmailDuplicateVerificationService(String email) {
 		if (!userRepository.existsByEmail(email)) {
 			return new ResponseEntity<Message>(new Message(LocalDate.now(), "사용 가능한 Email입니다."), HttpStatus.ACCEPTED);
