@@ -3,7 +3,7 @@ package com.hallym.project.RingRingRing.joinmember;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.hallym.project.RingRingRing.repository.ScenarioRepository;
+import com.hallym.project.RingRingRing.repository.WeeklyUsageRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,7 +31,7 @@ public class JoinMembershipService {
 	
 	
 
-	private final ScenarioRepository scenarioRepository;
+	private final WeeklyUsageRepository weeklyUsageRepository;
 
 	/**
 	 * 회원가입 서비스
@@ -95,7 +95,7 @@ public class JoinMembershipService {
 	}
 
 	public List<WeeklyUsageDTO> getWeeklyUsageById(Long id){
-		return scenarioRepository.findWeeklyUsageById(id);
+		return weeklyUsageRepository.findWeeklyUsageById(id);
 	}
 
 

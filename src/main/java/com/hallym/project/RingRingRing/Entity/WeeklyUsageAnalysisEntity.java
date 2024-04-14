@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "scenario")
-public class ScenarioEntity {
+public class WeeklyUsageAnalysisEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO,generator="native")
