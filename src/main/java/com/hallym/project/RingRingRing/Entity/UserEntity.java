@@ -3,11 +3,8 @@ package com.hallym.project.RingRingRing.Entity;
 import java.util.Set;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -73,6 +70,6 @@ public class UserEntity {
 
 	@JsonIgnore
 	@OneToMany(mappedBy="user",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	private Set<WeeklyUsageAnalysisEntity> scenarios;
+	private Set<WeeklyUsageAnalysisEntity> weeklyUsages;
     
 }
