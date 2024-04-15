@@ -55,7 +55,7 @@ public class RingRRSecurityConfig {
 		http.addFilterAfter(new JWTFilter(), LoginFilter.class);
 
 		http.authorizeHttpRequests((auth) -> auth
-				.requestMatchers( "/login","/signup", "/emailcheck/**").permitAll()
+				.requestMatchers( "/login","/signup", "/emailcheck/**","/find/**").permitAll()
 				.requestMatchers("/aicall").hasRole("AI_CALL")
 				.anyRequest().authenticated());
 		http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration),jwtUtil), UsernamePasswordAuthenticationFilter.class);

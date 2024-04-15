@@ -25,9 +25,11 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 /**
  * UsernamePasswordAuthenticationFilter 상속하여 오버라이드하고 시큐리티 필터에 addFilterAt하는 클래스
  */
+@Slf4j
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
@@ -127,7 +129,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		
 		
 		
-	    logger.error("Authentication failed: " + failed.getMessage());
+	    log.warn("Authentication failed: " + failed.getMessage());
 
 	    Message errorResponse = new Message(null, "이메일 또는 비번이 없거나 클렸습니다.");
 	    

@@ -2,6 +2,7 @@ package com.hallym.project.RingRingRing.jwt;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,6 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.hallym.project.RingRingRing.Entity.AuthorityEntity;
 import com.hallym.project.RingRingRing.Entity.UserEntity;
 import com.hallym.project.RingRingRing.login.CustomUserDetails;
+import com.hallym.project.RingRingRing.login.CustomUserDetilasService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -26,9 +28,11 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 /**
  *  JWT토큰 유효성 검증 필터
  */
+@Slf4j
 public class JWTFilter extends OncePerRequestFilter {
 
 
@@ -44,7 +48,7 @@ public class JWTFilter extends OncePerRequestFilter {
 			try {
 				jwt = request.getHeader("Authorization").split(" ")[1];
 			} catch (NullPointerException e) {
-				throw new MalformedJwtException("토큰이 없습니다.");
+				throw new MalformedJwtException("토큰이 없습니다."+request.getRequestURI());
 			}
 			SecretKey key = new SecretKeySpec(JWTConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8),
 					Jwts.SIG.HS256.key().build().getAlgorithm());
@@ -73,15 +77,15 @@ public class JWTFilter extends OncePerRequestFilter {
 
 		} catch (MalformedJwtException e) {
 			request.setAttribute("exception", e);
-			logger.error("JWT validation failed: " + e.getMessage());
+			log.warn("JWT validation failed: " + e.getMessage());
 			return;
 		} catch (SignatureException e) {
 			request.setAttribute("exception", e);
-			logger.error("JWT validation failed: " + e.getMessage());
+			log.warn("JWT validation failed: " + e.getMessage());
 			return;
 		}catch (ExpiredJwtException e) {
 			request.setAttribute("exception", e);
-			logger.error("JWT validation failed: " + e.getMessage());
+			log.warn("JWT validation failed: " + e.getMessage());
 			return;
 		}
 		finally {
@@ -90,5 +94,17 @@ public class JWTFilter extends OncePerRequestFilter {
 		}
 
 	}
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+    	if( request.getServletPath().equals("/signup")) {
+    		return true;
+    	}
+    	else if(request.getRequestURI().startsWith("/emailcheck/")) {
+    		return true;
+    	}
+    	else {
+    		return false;
+    	}
+    }
 
 }
