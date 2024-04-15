@@ -75,6 +75,6 @@ public class UserEntity {
 
 	@JsonIgnore
 	@OneToMany(mappedBy="user",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	private Set<ScenarioEntity> scenarios;
+	private Set<WeeklyUsageAnalysisEntity> weeklyUsages;
     
 }

@@ -19,9 +19,9 @@ import com.hallym.project.RingRingRing.customexception.JoinFailException;
 import com.hallym.project.RingRingRing.message.CurrentTime;
 import com.hallym.project.RingRingRing.message.SuccessMessage;
 import com.hallym.project.RingRingRing.repository.AuthorityRepository;
-import com.hallym.project.RingRingRing.repository.ScenarioRepository;
 import com.hallym.project.RingRingRing.repository.TemporaryEmailRepository;
 import com.hallym.project.RingRingRing.repository.UserRepository;
+import com.hallym.project.RingRingRing.repository.WeeklyUsageRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,9 +43,10 @@ public class JoinMembershipService {
 	
 	private final TemporaryEmailRepository temporaryEmailRepository;
 
-	private final ScenarioRepository scenarioRepository;
 	
 	private final CurrentTime cTime;
+	
+	private final WeeklyUsageRepository weeklyUsageRepository;
 
 	/**
 	 * 회원가입 서비스
@@ -127,7 +128,7 @@ public class JoinMembershipService {
 
 
 	public List<WeeklyUsageDTO> getWeeklyUsageById(Long id){
-		return scenarioRepository.findWeeklyUsageById(id);
+		return weeklyUsageRepository.findWeeklyUsageById(id);
 	}
 
 
