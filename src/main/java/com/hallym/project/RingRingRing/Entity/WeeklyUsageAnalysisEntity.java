@@ -14,13 +14,13 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "scenario")
+@Table(name = "weeklyUsage")
 public class WeeklyUsageAnalysisEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO,generator="native")
     @GenericGenerator(name = "native",strategy = "native")
-    @Column(name="scenario_id")
+    @Column(name="weeklyUsage_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

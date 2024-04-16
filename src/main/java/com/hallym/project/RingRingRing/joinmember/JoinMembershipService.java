@@ -94,8 +94,8 @@ public class JoinMembershipService {
 		
 	}
 
-	public List<WeeklyUsageDTO> getWeeklyUsageById(Long id){
-		return weeklyUsageRepository.findWeeklyUsageById(id);
+	public List<WeeklyUsageDTO> getWeeklyUsageByEmail(String email){
+		return weeklyUsageRepository.findWeeklyUsageByEmail(email);
 	}
 
 
