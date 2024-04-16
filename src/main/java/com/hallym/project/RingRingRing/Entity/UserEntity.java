@@ -25,6 +25,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 /**
  * 유저 정보를 저장하는데 사용되는 엔티티 유형성 검사를 설정되어 있음
+ * 사용자이름 속성 null값 입력시 MethodArgumentNotValidException
+ * 사용자이름 속성 null값 입력또는 이메일 형식이 아니면 MethodArgumentNotValidException
+ * 사용자이름 속성 null값입력 또는 조건식에 틀리면 MethodArgumentNotValidException
+ * 조건식: ^(?=.*[!@#$%^&*(),.?\\\":{}|<>])(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$
  */
 @Entity
 @Getter
@@ -34,9 +38,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
 public class UserEntity {
 	
-	/**
-	 * userEntity의 기본키 자동 생성
-	 */
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
 	@GenericGenerator(name = "native", strategy = "native")
@@ -44,16 +46,18 @@ public class UserEntity {
 	private Long id;
 	
 	/**
-	 * 사용자이름 속성 null값입력시 MethodArgumentNotValidException
+	 * 사용자이름 속성 null값 입력시 MethodArgumentNotValidException
 	 */
 	@NotNull(message = "이름을 입력해주세요")
+	@Column(nullable = false)
 	private String name;
 	
 	/**
-	 * 사용자이름 속성 null값입력또는 이메일 형식이 아니면 MethodArgumentNotValidException
+	 * 사용자이름 속성 null값 입력또는 이메일 형식이 아니면 MethodArgumentNotValidException
 	 */
 	@NotNull(message = "이메일을 입력해주세요")
 	@Email(message = "이메일 형식으로 입력해 주세요")
+	@Column(nullable = false)
 	private String email;
 	
 	/**
@@ -62,6 +66,7 @@ public class UserEntity {
 	@NotNull
 	@Pattern(regexp = "^(?=.*[!@#$%^&*(),.?\\\":{}|<>])(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$", 
 			message = "8자 이상글자에 적어도 하나의 특수문자, 영문자, 숫자를 포함해야 합니다.")
+	@Column(nullable = false)
 	private String pwd;
 	
     @OneToMany(mappedBy="user",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
