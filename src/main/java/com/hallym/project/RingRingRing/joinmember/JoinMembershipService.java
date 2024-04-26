@@ -124,13 +124,16 @@ public class JoinMembershipService {
 			log.warn("임시 가입 메일 지우기 실패: " + e.getMessage());
 		}
 	 }
-	
 
+	/**
+	 *
+	 * 사용자의 주간 사용 통계를 가져온다.
+	 *
+	 */
 
-	public List<WeeklyUsageDTO> getWeeklyUsageById(Long id){
-		return weeklyUsageRepository.findWeeklyUsageById(id);
+	public List<WeeklyUsageDTO> getWeeklyUsageByEmail(String email){
+		return weeklyUsageRepository.findWeeklyUsageByEmail(email);
 	}
-
 
 
 

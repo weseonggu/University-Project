@@ -14,9 +14,9 @@ public interface WeeklyUsageRepository extends JpaRepository<WeeklyUsageAnalysis
 
     @Query("SELECT new com.hallym.project.RingRingRing.DTO.WeeklyUsageDTO(FUNCTION('yearweek', w.timestamp), SUM(w.duration))" +
             "from WeeklyUsageAnalysisEntity as w " +
-            "where w.id = :id " +
+            "where w.user.email= :email " +
             "group by function('yearweek', w.timestamp)")
-    List<WeeklyUsageDTO> findWeeklyUsageById(@Param("id") Long id);
+    List<WeeklyUsageDTO> findWeeklyUsageByEmail(@Param("email") String email);
 
 
 

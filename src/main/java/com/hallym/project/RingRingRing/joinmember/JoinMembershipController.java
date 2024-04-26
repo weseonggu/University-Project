@@ -1,5 +1,6 @@
 package com.hallym.project.RingRingRing.joinmember;
 
+import com.hallym.project.RingRingRing.DTO.WeeklyUsageDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,10 @@ import com.hallym.project.RingRingRing.message.SuccessMessage;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 회원가입 컨트롤러
  */
@@ -61,6 +66,13 @@ public class JoinMembershipController {
 //		joinService.cleanupOldData();
 //		
 //	}
+
+	@GetMapping("/usage/{email}")
+	public ResponseEntity<List<WeeklyUsageDTO>> getWeeklyUsage(@PathVariable("email") String email){
+		List<WeeklyUsageDTO> weeklyusages = joinService.getWeeklyUsageByEmail(email);
+		return ResponseEntity.ok(weeklyusages);
+	}
+
 
 
 }
