@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.hallym.project.RingRingRing.DTO.UserDTO;
 import com.hallym.project.RingRingRing.DTO.WeeklyUsageDTO;
 import com.hallym.project.RingRingRing.Entity.AuthorityEntity;
 import com.hallym.project.RingRingRing.Entity.TemporaryEmail;
@@ -54,7 +55,7 @@ public class JoinMembershipService {
 	 * @return ResponseEntity<SuccessMessage>
 	 * @throws IDOverlapException, JoinFailException
 	 */
-	public ResponseEntity<SuccessMessage> joinService(UserEntity userInfo) {
+	public ResponseEntity<SuccessMessage> joinService(UserDTO userInfo) {
 		
 		if(userRepository.existsByEmail(userInfo.getEmail())) {
 			throw new IDOverlapException("이미 사용중인 Email입니다.");
@@ -116,8 +117,7 @@ public class JoinMembershipService {
 	 @Scheduled(cron = "0 */10 * * * *")
 	 public void cleanupOldData() {
 		 try {
-			 LocalDateTime tenMinutesAgo = LocalDateTime.now().minusMinutes(10);
-			 temporaryEmailRepository.deleteOlderThanTenMinutes(tenMinutesAgo);
+			 temporaryEmailRepository.deleteOlderThanTenMinutes(LocalDateTime.now().minusMinutes(10));
 			 log.info("임시 가입 메일 지움");
 			
 		} catch (Exception e) {

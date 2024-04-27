@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,6 +17,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import com.hallym.project.RingRingRing.DTO.UserDTO;
 import com.hallym.project.RingRingRing.Entity.UserEntity;
 import com.hallym.project.RingRingRing.jwt.JWTUtil;
 import com.hallym.project.RingRingRing.login.CustomUserDetails;
@@ -97,12 +102,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.setCharacterEncoding("UTF-8");
         response.setStatus(HttpStatus.OK.value());
         
-        UserEntity user = UserEntity.builder()
-        		.id(customUserDetails.getUserEntity().getId())
-        		.name(customUserDetails.getUserEntity().getName())
-        		.email(customUserDetails.getUsername())
-        		.pwd(null)
-        		.build();
+        UserDTO user = new UserDTO(customUserDetails.getUserEntity().getId(),customUserDetails.getUserEntity().getName(),customUserDetails.getUsername(),null);
+//        MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(user);
+//        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("pwd");
+//        FilterProvider filters =  new SimpleFilterProvider().addFilter("LoginFilter", filter);
+//        mappingJacksonValue.setFilters(filters);
+
         
         ObjectMapper objectMapper = new ObjectMapper();
         try {

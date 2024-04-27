@@ -1,9 +1,5 @@
 package com.hallym.project.RingRingRing.DTO;
 
-import java.util.Set;
-
-import com.hallym.project.RingRingRing.Entity.AuthorityEntity;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
