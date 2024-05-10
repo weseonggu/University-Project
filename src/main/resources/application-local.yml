@@ -11,12 +11,29 @@ spring:
   jpa:
     properties:
       hibernate:
-        format_sql: true
     hibernate:
       ddl-auto: update
+  mail:
+    host: smtp.gmail.com 
+    port: 587
+    username: ringringringproject@gmail.com
+    password: vbou tyzq pbna txol
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
+      
+      
+      
+    
 
 
 server:
   port: 9090
+  
+
   
   
