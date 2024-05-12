@@ -3,6 +3,9 @@ package com.hallym.project.RingRingRing.joinmember;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.hallym.project.RingRingRing.DTO.WeeklyUsageDTO;
+import com.hallym.project.RingRingRing.Entity.WeeklyUsageAnalysisEntity;
+import com.hallym.project.RingRingRing.message.WeeklyUsageMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -10,8 +13,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.hallym.project.RingRingRing.DTO.UserDTO;
-import com.hallym.project.RingRingRing.DTO.WeeklyUsageDTO;
 import com.hallym.project.RingRingRing.Entity.AuthorityEntity;
 import com.hallym.project.RingRingRing.Entity.TemporaryEmail;
 import com.hallym.project.RingRingRing.Entity.UserEntity;
@@ -55,7 +56,7 @@ public class JoinMembershipService {
 	 * @return ResponseEntity<SuccessMessage>
 	 * @throws IDOverlapException, JoinFailException
 	 */
-	public ResponseEntity<SuccessMessage> joinService(UserDTO userInfo) {
+	public ResponseEntity<SuccessMessage> joinService(UserEntity userInfo) {
 		
 		if(userRepository.existsByEmail(userInfo.getEmail())) {
 			throw new IDOverlapException("이미 사용중인 Email입니다.");
@@ -117,23 +118,14 @@ public class JoinMembershipService {
 	 @Scheduled(cron = "0 */10 * * * *")
 	 public void cleanupOldData() {
 		 try {
-			 temporaryEmailRepository.deleteOlderThanTenMinutes(LocalDateTime.now().minusMinutes(10));
+			 LocalDateTime tenMinutesAgo = LocalDateTime.now().minusMinutes(10);
+			 temporaryEmailRepository.deleteOlderThanTenMinutes(tenMinutesAgo);
 			 log.info("임시 가입 메일 지움");
 			
 		} catch (Exception e) {
 			log.warn("임시 가입 메일 지우기 실패: " + e.getMessage());
 		}
 	 }
-
-	/**
-	 *
-	 * 사용자의 주간 사용 통계를 가져온다.
-	 *
-	 */
-
-	public List<WeeklyUsageDTO> getWeeklyUsageByEmail(String email){
-		return weeklyUsageRepository.findWeeklyUsageByEmail(email);
-	}
 
 
 
