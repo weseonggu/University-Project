@@ -1,11 +1,7 @@
 package com.hallym.project.RingRingRing.joinmember;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-import com.hallym.project.RingRingRing.DTO.WeeklyUsageDTO;
-import com.hallym.project.RingRingRing.Entity.WeeklyUsageAnalysisEntity;
-import com.hallym.project.RingRingRing.message.WeeklyUsageMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -13,6 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.hallym.project.RingRingRing.DTO.UserDTO;
 import com.hallym.project.RingRingRing.Entity.AuthorityEntity;
 import com.hallym.project.RingRingRing.Entity.TemporaryEmail;
 import com.hallym.project.RingRingRing.Entity.UserEntity;
@@ -23,7 +20,6 @@ import com.hallym.project.RingRingRing.message.SuccessMessage;
 import com.hallym.project.RingRingRing.repository.AuthorityRepository;
 import com.hallym.project.RingRingRing.repository.TemporaryEmailRepository;
 import com.hallym.project.RingRingRing.repository.UserRepository;
-import com.hallym.project.RingRingRing.repository.WeeklyUsageRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +44,6 @@ public class JoinMembershipService {
 	
 	private final CurrentTime cTime;
 	
-	private final WeeklyUsageRepository weeklyUsageRepository;
 
 	/**
 	 * 회원가입 서비스
@@ -56,7 +51,7 @@ public class JoinMembershipService {
 	 * @return ResponseEntity<SuccessMessage>
 	 * @throws IDOverlapException, JoinFailException
 	 */
-	public ResponseEntity<SuccessMessage> joinService(UserEntity userInfo) {
+	public ResponseEntity<SuccessMessage> joinService(UserDTO userInfo) {
 		
 		if(userRepository.existsByEmail(userInfo.getEmail())) {
 			throw new IDOverlapException("이미 사용중인 Email입니다.");
@@ -125,6 +120,33 @@ public class JoinMembershipService {
 		} catch (Exception e) {
 			log.warn("임시 가입 메일 지우기 실패: " + e.getMessage());
 		}
+	 }
+	 
+	 /*
+	  * 사용자 삭제
+	  */
+	 public int deleteUserService(UserDTO userInfo) {
+		 try {
+			 UserEntity user =  userRepository.findById(userInfo.getId()).get();
+			 if(!user.getEmail().equals(userInfo.getEmail())) {
+				 return 1;// 삭제할 이메일과 DB의 메일이 틀림
+			 }
+			 
+			 if(passwordEncoder.matches(userInfo.getPwd(), user.getPwd())) {
+				 userRepository.deleteById(userInfo.getId());
+				 return 2;
+			 }
+			 else {
+				 return 3;
+			 }
+		 }catch (Exception e) {
+			// TODO: handle exception
+			 log.warn("삭제 실패: "+e.getMessage());
+			 return 4;
+		}
+		 
+		 
+		 
 	 }
 
 

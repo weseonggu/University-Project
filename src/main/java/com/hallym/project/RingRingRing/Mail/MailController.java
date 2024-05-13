@@ -32,10 +32,10 @@ public class MailController {
 			@ApiResponse(responseCode = "200", description = "코드전송 성공"),
 			@ApiResponse(responseCode = "500", description = "코드전송 실패")
 	})
-	public String MailSend(@PathVariable("email") String email) {
+	public ResponseEntity<String> MailSend(@PathVariable("email") String email) {
 		log.info("이메일 인증: "+email);
 		mailService.sendMail(email);
-		return "메일을 보냈습니다.";
+		return new ResponseEntity<String>("인증 메일을 보냈습니다.", HttpStatus.OK);
 	}
 	
 	@PostMapping("/codecheck")

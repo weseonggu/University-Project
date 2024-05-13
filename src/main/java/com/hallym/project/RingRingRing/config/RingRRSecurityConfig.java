@@ -56,6 +56,7 @@ public class RingRRSecurityConfig {
 
 		http.authorizeHttpRequests((auth) -> auth
 				.requestMatchers( "/login","/signup", "/emailcheck/**","/find/**","/mailsender/**","/codecheck").permitAll()
+				.requestMatchers( "/userDelete").permitAll()// 임시
 				.requestMatchers( "/v3/**", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()// swagger
 				.requestMatchers("/aicall").hasRole("AI_CALL")
 				.requestMatchers("/usage/**").hasRole("AI_CALL")

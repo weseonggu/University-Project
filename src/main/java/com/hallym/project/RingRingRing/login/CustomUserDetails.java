@@ -12,6 +12,10 @@ import com.hallym.project.RingRingRing.Entity.AuthorityEntity;
 import com.hallym.project.RingRingRing.Entity.UserEntity;
 
 public class CustomUserDetails implements UserDetails{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private UserEntity userEntity;
 	public CustomUserDetails(UserEntity userEntity) {
 		this.userEntity = userEntity;

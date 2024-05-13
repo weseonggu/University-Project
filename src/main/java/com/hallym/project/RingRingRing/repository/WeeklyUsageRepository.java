@@ -1,20 +1,15 @@
 package com.hallym.project.RingRingRing.repository;
 
-import com.hallym.project.RingRingRing.DTO.WeeklyUsageDTO;
-import com.hallym.project.RingRingRing.Entity.WeeklyUsageAnalysisEntity;
-import jakarta.persistence.ColumnResult;
-import jakarta.persistence.ConstructorResult;
-import jakarta.persistence.NamedNativeQuery;
-import jakarta.persistence.SqlResultSetMapping;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import com.hallym.project.RingRingRing.DTO.WeeklyUsageDTO;
+import com.hallym.project.RingRingRing.Entity.WeeklyUsageAnalysisEntity;
 
 @Repository
 public interface WeeklyUsageRepository extends JpaRepository<WeeklyUsageAnalysisEntity, Long> {
