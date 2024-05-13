@@ -13,5 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 public class WeeklyUsageMessage {
     private Long duration;
+    private Long average;
     private String message;
 }

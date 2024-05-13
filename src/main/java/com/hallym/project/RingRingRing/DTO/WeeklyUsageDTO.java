@@ -19,6 +19,8 @@ public class WeeklyUsageDTO {
 
     private Long duration;
 
+    private Double average;
+
     private LocalDateTime week;
 
 

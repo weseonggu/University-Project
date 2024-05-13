@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -28,18 +29,23 @@ public class WeeklyUsageService {
     private final WeeklyUsageRepository weeklyUsageRepository;
     private final UserRepository userRepository;
 
-    public ResponseEntity<WeeklyUsageMessage> getWeeklyUsageByEmail(String email) {
+        public ResponseEntity<WeeklyUsageMessage> getWeeklyUsageByEmail(String email) {
 
-        LocalDate now = LocalDate.now();
-        LocalDate startOfWeek = now.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-        LocalDate endOfWeek = now.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+            LocalDate now = LocalDate.now();
+            LocalDate startOfWeek = now.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+            LocalDate endOfWeek = now.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
 
-        Long duration = weeklyUsageRepository.findWeeklyUsageByEmailAndTimestampBetween(email, startOfWeek.atStartOfDay(), endOfWeek.atTime(LocalTime.MAX));
-        log.info("이메일에 따른 주간 사용 통계 전송: " + email);
+            Map<String, Object> usageStatistics = weeklyUsageRepository.findWeeklyUsageByEmailAndTimestampBetween(email, startOfWeek.atStartOfDay(), endOfWeek.atTime(LocalTime.MAX));
 
-        return new ResponseEntity<WeeklyUsageMessage>(new WeeklyUsageMessage(duration, "평균 연습 시간"), HttpStatus.OK);
+            Long duration = (Long) usageStatistics.get("duration");
+            Double average = (Double) usageStatistics.get("average");
+            Long averageLong = (long) Math.floor(average);
 
-    }
+            log.info("이메일에 따른 주간 사용 통계 전송: " + email);
+
+            return new ResponseEntity<WeeklyUsageMessage>(new WeeklyUsageMessage(duration, averageLong, "주간 연습 시간"), HttpStatus.OK);
+
+        }
 
 //        WeeklyUsageAnalysisEntity testUsage = WeeklyUsageAnalysisEntity.builder()
 //                        .user(user)

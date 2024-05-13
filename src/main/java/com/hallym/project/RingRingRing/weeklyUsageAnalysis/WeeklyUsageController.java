@@ -28,7 +28,7 @@ public class WeeklyUsageController {
     @GetMapping("/usage/{email}")
     @Operation(summary = "주간 사용 통계 api")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "duration: (Long)사용시간,<br>message: 평균 연습 시간"),
+            @ApiResponse(responseCode = "200", description = "duration: (Long)누적시간,<br>average: (Long)평균시간,<br>message: 주간 연습 시간"),
             @ApiResponse(responseCode = "500", description = "통계 조회 실패")
     })
     public ResponseEntity<WeeklyUsageMessage> getWeeklyUsage(@PathVariable("email") String email){
