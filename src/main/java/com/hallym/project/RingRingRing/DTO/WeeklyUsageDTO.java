@@ -1,16 +1,34 @@
 package com.hallym.project.RingRingRing.DTO;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.hallym.project.RingRingRing.Entity.UserEntity;
+import com.hallym.project.RingRingRing.Entity.WeeklyUsageAnalysisEntity;
+import lombok.*;
 
-@Getter @Setter
+import java.time.LocalDateTime;
+import java.util.Date;
+
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class WeeklyUsageDTO {
 
-    private int weekNumber;
-    private int usageTime;
+//    private int weekNumber;
+    private Long id;
 
-    public WeeklyUsageDTO(int weekNumber, int usageTime) {
-        this.weekNumber = weekNumber;
-        this.usageTime = usageTime;
+    private int timestamp;
+
+    private Long duration;
+
+    private LocalDateTime week;
+
+    public WeeklyUsageAnalysisEntity toEntity(UserEntity user){
+        return WeeklyUsageAnalysisEntity.builder()
+                .timestamp(timestamp)
+                .duration(duration)
+                .week(LocalDateTime.now())
+                .build();
     }
+
 }

@@ -1,7 +1,8 @@
 package com.hallym.project.RingRingRing.joinmember;
 
-import java.util.List;
-
+import com.hallym.project.RingRingRing.DTO.WeeklyUsageDTO;
+import com.hallym.project.RingRingRing.Entity.WeeklyUsageAnalysisEntity;
+import com.hallym.project.RingRingRing.message.WeeklyUsageMessage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,13 +10,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hallym.project.RingRingRing.DTO.UserDTO;
-import com.hallym.project.RingRingRing.DTO.WeeklyUsageDTO;
+import com.hallym.project.RingRingRing.Entity.UserEntity;
 import com.hallym.project.RingRingRing.customexception.IDOverlapException;
 import com.hallym.project.RingRingRing.message.SuccessMessage;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 회원가입 컨트롤러
@@ -39,7 +42,7 @@ public class JoinMembershipController {
 	 * UserEntity클래스 참고
 	 */
 	@PostMapping("/signup")
-	public ResponseEntity<SuccessMessage> joinProcess(@Valid @RequestBody UserDTO userInfo) {
+	public ResponseEntity<SuccessMessage> joinProcess(@Valid @RequestBody UserEntity userInfo) {
 		
 		return joinService.joinService(userInfo);
 		
@@ -60,11 +63,6 @@ public class JoinMembershipController {
 	}
 
 
-	@GetMapping("/usage/{email}")
-	public ResponseEntity<List<WeeklyUsageDTO>> getWeeklyUsage(@PathVariable("email") String email){
-		List<WeeklyUsageDTO> weeklyusages = joinService.getWeeklyUsageByEmail(email);
-		return ResponseEntity.ok(weeklyusages);
-	}
 
 
 

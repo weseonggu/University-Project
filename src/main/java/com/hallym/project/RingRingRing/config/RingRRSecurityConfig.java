@@ -55,9 +55,10 @@ public class RingRRSecurityConfig {
 		http.addFilterAfter(new JWTFilter(), LoginFilter.class);
 
 		http.authorizeHttpRequests((auth) -> auth
-				.requestMatchers( "/login","/signup", "/emailcheck/**","/find/**","/mailsender/**","/codecheck").permitAll()
+				.requestMatchers( "/login","/signup", "/emailcheck/**","/find/**", "/usage/**").permitAll()
 				.requestMatchers( "/v3/**", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()// swagger
 				.requestMatchers("/aicall").hasRole("AI_CALL")
+				.requestMatchers("/usage/**").hasRole("AI_CALL")
 				.requestMatchers("/kogpt2").hasRole("AI_CALL")
 				.anyRequest().authenticated());
 		http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration),jwtUtil), UsernamePasswordAuthenticationFilter.class);

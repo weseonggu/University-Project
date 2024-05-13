@@ -1,5 +1,6 @@
 package com.hallym.project.RingRingRing.Entity;
 
+import com.hallym.project.RingRingRing.DTO.WeeklyUsageDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -27,11 +29,20 @@ public class WeeklyUsageAnalysisEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    private String scenario;
+    private int timestamp;
 
-    private LocalDateTime timestamp;
+    private Long duration;
 
-    private int duration;
+    private LocalDateTime week;
+
+    public WeeklyUsageDTO toDTO() {
+        return WeeklyUsageDTO.builder()
+                .timestamp(timestamp)
+                .duration(duration)
+                .week(LocalDateTime.now())
+                .build();
+
+    }
 
 
 }
