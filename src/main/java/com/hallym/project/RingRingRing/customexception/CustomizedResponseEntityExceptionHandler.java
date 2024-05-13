@@ -69,6 +69,12 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 		return new ResponseEntity<FailMessage>(message, HttpStatus.CONFLICT);
 	}
 	
+	@ExceptionHandler(MailSendFailException.class)
+	public final ResponseEntity<FailMessage> handleMailSendFailException(Exception ex, WebRequest request)throws Exception{
+		FailMessage message = new FailMessage(rTime.getTime(), request.getDescription(false), List.of("인증 코드전송 실패"));
+		return new ResponseEntity<FailMessage>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
 
 	
 	/**

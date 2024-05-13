@@ -62,12 +62,6 @@ public class JoinMembershipController {
 		
 	}
 
-//	@GetMapping("/find/{email}")
-//	public void findProcess(@PathVariable("email") String email) {
-//		
-//		joinService.cleanupOldData();
-//		
-//	}
 
 
 

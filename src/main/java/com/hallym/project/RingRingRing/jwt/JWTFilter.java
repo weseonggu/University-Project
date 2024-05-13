@@ -2,7 +2,6 @@ package com.hallym.project.RingRingRing.jwt;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +16,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.hallym.project.RingRingRing.Entity.AuthorityEntity;
 import com.hallym.project.RingRingRing.Entity.UserEntity;
 import com.hallym.project.RingRingRing.login.CustomUserDetails;
-import com.hallym.project.RingRingRing.login.CustomUserDetilasService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -99,7 +97,19 @@ public class JWTFilter extends OncePerRequestFilter {
     	if( request.getServletPath().equals("/signup")) {
     		return true;
     	}
+    	else if( request.getServletPath().equals("/codecheck")) {
+    		return true;
+    	}
     	else if(request.getRequestURI().startsWith("/emailcheck/")) {
+    		return true;
+    	}
+    	else if(request.getRequestURI().startsWith("/mailsender/")) {
+    		return true;
+    	}
+    	else if(request.getRequestURI().startsWith("/swagger-ui/")) {
+    		return true;
+    	}
+    	else if(request.getRequestURI().startsWith("/v3/")) {
     		return true;
     	}
     	else {
