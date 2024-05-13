@@ -40,18 +40,9 @@ public class WeeklyUsageAnalysisEntity {
 
     private int timestamp;
 
-    private Long duration;
-
     private LocalDateTime week;
 
-    public WeeklyUsageDTO toDTO() {
-        return WeeklyUsageDTO.builder()
-                .timestamp(timestamp)
-                .duration(duration)
-                .week(LocalDateTime.now())
-                .build();
 
-    }
 
 
 }

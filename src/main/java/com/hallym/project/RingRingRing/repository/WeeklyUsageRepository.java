@@ -14,17 +14,21 @@ import com.hallym.project.RingRingRing.Entity.WeeklyUsageAnalysisEntity;
 @Repository
 public interface WeeklyUsageRepository extends JpaRepository<WeeklyUsageAnalysisEntity, Long> {
 
-    @Query(value =
-            "SELECT new com.hallym.project.RingRingRing.DTO.WeeklyUsageDTO( " +
-            "w.id, w.timestamp, SUM(w.timestamp), w.week) " +
+    @Query(value = "SELECT SUM(w.timestamp) as duration " +
             "from WeeklyUsageAnalysisEntity as w " +
             "where w.user.email= :email " +
-            "and w.week between :start and :end " +
-            "group by w.id "
-    )
-    List<WeeklyUsageDTO> findWeeklyUsageByEmailAndTimestampBetween(@Param("email") String email, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
-
+            "and w.week between :start and :end ")
+    Long findWeeklyUsageByEmailAndTimestampBetween(@Param("email") String email, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 }
+//    @Query(value =
+//            "SELECT new com.hallym.project.RingRingRing.DTO.WeeklyUsageDTO( " +
+//            "w.id, w.timestamp, SUM(w.timestamp), w.week) " +
+//            "from WeeklyUsageAnalysisEntity as w " +
+//            "where w.user.email= :email " +
+//            "and w.week between :start and :end " +
+//            "group by w.id "
+//    )
+
 //            "group by w.user.email "
 //new com.hallym.project.RingRingRing.Entity.WeeklyUsageAnalysisEntity(FUNCTION('yearweek', w.timestamp)
 
