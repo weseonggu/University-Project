@@ -6,12 +6,13 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import com.hallym.project.RingRingRing.Entity.TemporaryEmail;
 import com.hallym.project.RingRingRing.Entity.UserEntity;
 
 import jakarta.transaction.Transactional;
-
+@Repository
 public interface TemporaryEmailRepository extends JpaRepository<TemporaryEmail, Long>{
 	List<UserEntity> findByEmail(String email);
 	boolean existsByEmail(String email);

@@ -59,12 +59,6 @@ public class JoinMembershipController {
 		
 	}
 
-//	@GetMapping("/find/{email}")
-//	public void findProcess(@PathVariable("email") String email) {
-//		
-//		joinService.cleanupOldData();
-//		
-//	}
 
 	@GetMapping("/usage/{email}")
 	public ResponseEntity<List<WeeklyUsageDTO>> getWeeklyUsage(@PathVariable("email") String email){
