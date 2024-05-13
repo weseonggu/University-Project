@@ -30,26 +30,22 @@ public class WeeklyUsageService {
 
     public ResponseEntity<WeeklyUsageMessage> getWeeklyUsageByEmail(String email) {
 
-        UserEntity user = userRepository.findByEmail(email).get(0);
-
-        Long duration = 0L;
         LocalDate now = LocalDate.now();
         LocalDate startOfWeek = now.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
         LocalDate endOfWeek = now.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
 
-//        WeeklyUsageAnalysisEntity testUsage = WeeklyUsageAnalysisEntity.builder()
-//                        .user(user)
-//                        .timestamp(15)
-//                                .duration(duration)
-//                                        .week(LocalDateTime.now()).build();
-//        weeklyUsageRepository.save(testUsage);
-
-        List<WeeklyUsageDTO> weeklyUsageDTO = weeklyUsageRepository.findWeeklyUsageByEmailAndTimestampBetween(email, startOfWeek.atStartOfDay(), endOfWeek.atTime(LocalTime.MAX));
-        for(WeeklyUsageDTO wud : weeklyUsageDTO){
-            duration += wud.getTimestamp();
-        }
+        Long duration = weeklyUsageRepository.findWeeklyUsageByEmailAndTimestampBetween(email, startOfWeek.atStartOfDay(), endOfWeek.atTime(LocalTime.MAX));
+        log.info("이메일에 따른 주간 사용 통계 전송: " + email);
 
         return new ResponseEntity<WeeklyUsageMessage>(new WeeklyUsageMessage(duration, "평균 연습 시간"), HttpStatus.OK);
 
     }
+
+//        WeeklyUsageAnalysisEntity testUsage = WeeklyUsageAnalysisEntity.builder()
+//                        .user(user)
+//                        .timestamp(15)
+//                        .week(LocalDateTime.now()).build();
+//        weeklyUsageRepository.save(testUsage);
+
+//        }
 }

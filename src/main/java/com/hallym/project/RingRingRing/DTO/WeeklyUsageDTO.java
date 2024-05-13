@@ -14,8 +14,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class WeeklyUsageDTO {
 
-//    private int weekNumber;
-    private Long id;
 
     private int timestamp;
 
@@ -23,12 +21,5 @@ public class WeeklyUsageDTO {
 
     private LocalDateTime week;
 
-    public WeeklyUsageAnalysisEntity toEntity(UserEntity user){
-        return WeeklyUsageAnalysisEntity.builder()
-                .timestamp(timestamp)
-                .duration(duration)
-                .week(LocalDateTime.now())
-                .build();
-    }
 
 }
