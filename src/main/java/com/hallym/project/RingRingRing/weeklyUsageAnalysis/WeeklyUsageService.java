@@ -1,8 +1,10 @@
 package com.hallym.project.RingRingRing.weeklyUsageAnalysis;
 
+import com.hallym.project.RingRingRing.DTO.CallTimeDTO;
 import com.hallym.project.RingRingRing.DTO.WeeklyUsageDTO;
 import com.hallym.project.RingRingRing.Entity.UserEntity;
 import com.hallym.project.RingRingRing.Entity.WeeklyUsageAnalysisEntity;
+import com.hallym.project.RingRingRing.message.CallTimeMessage;
 import com.hallym.project.RingRingRing.message.WeeklyUsageMessage;
 import com.hallym.project.RingRingRing.repository.UserRepository;
 import com.hallym.project.RingRingRing.repository.WeeklyUsageRepository;
@@ -47,11 +49,20 @@ public class WeeklyUsageService {
 
         }
 
-//        WeeklyUsageAnalysisEntity testUsage = WeeklyUsageAnalysisEntity.builder()
-//                        .user(user)
-//                        .timestamp(15)
-//                        .week(LocalDateTime.now()).build();
-//        weeklyUsageRepository.save(testUsage);
+        public ResponseEntity<CallTimeMessage> saveCallTime(CallTimeDTO callTimeDTO){
+            int callTimes = callTimeDTO.getCallTime();
+            UserEntity user = userRepository.findById(callTimeDTO.getUserId()).orElse(null);
 
-//        }
+            WeeklyUsageAnalysisEntity callTime = WeeklyUsageAnalysisEntity.builder()
+                    .user(user)
+                    .timestamp(callTimes)
+                    .week(LocalDateTime.now())
+                    .build();
+            weeklyUsageRepository.save(callTime);
+
+            log.info("통화 시간 저장 중");
+            return new ResponseEntity<CallTimeMessage>(new CallTimeMessage(callTimes, "통화 시간 저장"), HttpStatus.OK);
+        }
+
+
 }

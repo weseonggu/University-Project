@@ -1,5 +1,7 @@
 package com.hallym.project.RingRingRing.weeklyUsageAnalysis;
 
+import com.hallym.project.RingRingRing.DTO.CallTimeDTO;
+import com.hallym.project.RingRingRing.message.CallTimeMessage;
 import com.hallym.project.RingRingRing.message.WeeklyUsageMessage;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -8,9 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,4 +36,22 @@ public class WeeklyUsageController {
         return weeklyUsageService.getWeeklyUsageByEmail(email);
     }
 
+
+    /**
+     * 요청 방식: PUT<br>
+     * EndPoint: /save <br>
+     * @param callTimeDTO 사용자 정보로 {"userID":유저Id(ex 1), "callTime":통화시간(ex 200)}를 body에 넣어서 요청<br>
+     * @return CODE: 200 BODY: {"callTime": "[통화 시간]", "message": "통화 시간 저장"} <br>
+     */
+    @PutMapping("/save")
+    @Operation(summary = "통화 시간 저장 api")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "callTime: (Long)통화시간,<br>message: 통화 시간 저장"),
+            @ApiResponse(responseCode = "400", description = "Failed to read request")
+    })
+    public ResponseEntity<CallTimeMessage> putSavedCallTime(@RequestBody CallTimeDTO callTimeDTO){
+        log.info("통화시간 저장 요청");
+        return weeklyUsageService.saveCallTime(callTimeDTO);
+    }
 }
+
