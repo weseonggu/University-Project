@@ -40,7 +40,7 @@ public class JoinMembershipService {
 	 * 회원가입 서비스
 	 * 
 	 * @param userInfo 컨트롤러에서 받아온 UserEntity객체
-	 * @return 1: 성공, 2: 이미 사용중인 아이디 3:예외
+	 * @return int 1: 성공, 2: 이미 사용중인 아이디 3:예외
 	 * @throws DataAccessException, RuntimeException
 	 */
 	@Transactional(rollbackFor = { RuntimeException.class, DataAccessException.class })
@@ -56,6 +56,10 @@ public class JoinMembershipService {
 					.pwd(passwordEncoder.encode(userInfo.getPwd())).build();
 
 			userRepository.save(user);
+			int i =1;
+			if(i==1) {
+				throw new RuntimeException();
+			}
 			AuthorityEntity authority = AuthorityEntity.builder().role("ROLE_AI_CALL")
 					.user(userRepository.findByEmail(userInfo.getEmail()).get(0)).build();
 
@@ -68,7 +72,7 @@ public class JoinMembershipService {
 		} catch (RuntimeException e) {
 			throw new RuntimeException(e);
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			throw e;
 		}
 
 	}
@@ -77,20 +81,32 @@ public class JoinMembershipService {
 	 * 이메일 중복 체크 임시로 이메일을 저장하여 가입중 다른 사용자가 가입 못하도록 함
 	 * 
 	 * @param email 문자열 컨트롤러에서 받아온 String
-	 * @return ResponseEntity<SuccessMessage>
-	 * @throws IDOverlapException
+	 * @return boolean
+	 * @throws DataAccessException, RuntimeException
 	 */
 	@Transactional(rollbackFor = { RuntimeException.class, DataAccessException.class })
 	public boolean EmailDuplicateVerificationService(String email) {
-
-		if (!userRepository.existsByEmail(email) && !temporaryEmailRepository.existsByEmail(email)) {
-			TemporaryEmail tEmail = TemporaryEmail.builder().email(email).checkTime(LocalDateTime.now()).build();
-			temporaryEmailRepository.save(tEmail);
-
-			return true;
-		} else {
-			return false;
+		try {
+			if (!userRepository.existsByEmail(email) && !temporaryEmailRepository.existsByEmail(email)) {
+				TemporaryEmail tEmail = TemporaryEmail.builder().email(email).checkTime(LocalDateTime.now()).build();
+				temporaryEmailRepository.save(tEmail);
+				
+				return true;
+			} else {
+				return false;
+			}
+			
+		}catch (DataAccessException e) {
+			// TODO: handle exception
+			throw new RuntimeException(e);
+		}catch (RuntimeException e) {
+			// TODO: handle exception
+			throw new RuntimeException(e);
+		}catch (Exception e) {
+			// TODO: handle exception
+			throw e;
 		}
+		
 	}
 
 	/**
@@ -103,8 +119,15 @@ public class JoinMembershipService {
 			LocalDateTime tenMinutesAgo = LocalDateTime.now().minusMinutes(10);
 			temporaryEmailRepository.deleteOlderThanTenMinutes(tenMinutesAgo);
 
-		} catch (Exception e) {
-
+		} catch (DataAccessException e) {
+			// TODO: handle exception
+			throw new RuntimeException(e);
+		}catch (RuntimeException e) {
+			// TODO: handle exception
+			throw new RuntimeException(e);
+		}catch (Exception e) {
+			// TODO: handle exception
+			throw e;
 		}
 	}
 
@@ -125,9 +148,15 @@ public class JoinMembershipService {
 			} else {
 				return 3;
 			}
-		} catch (Exception e) {
+		} catch (DataAccessException e) {
 			// TODO: handle exception
-			return 4;
+			throw new RuntimeException(e);
+		}catch (RuntimeException e) {
+			// TODO: handle exception
+			throw new RuntimeException(e);
+		}catch (Exception e) {
+			// TODO: handle exception
+			throw e;
 		}
 
 	}

@@ -7,8 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class WeeklyUsageMessage {
-    private Long duration;
-    private Long average;
+public class CallTimeMessage {
+    private int callTime;
     private String message;
 }
