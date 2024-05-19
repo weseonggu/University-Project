@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hallym.project.RingRingRing.DTO.UserDTO;
-import com.hallym.project.RingRingRing.customexception.IDOverlapException;
+import com.hallym.project.RingRingRing.joinmember.DTO.UserDTO;
+import com.hallym.project.RingRingRing.message.CurrentTime;
 import com.hallym.project.RingRingRing.message.SuccessMessage;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,40 +28,35 @@ import lombok.RequiredArgsConstructor;
 public class JoinMembershipController {
 	
 	private final JoinMembershipService joinService;
-//	private final UserRepository userRepository;
+	
+	private final CurrentTime cTime;
 	
 	/**
-	 * 회원가입 컨트롤러<br>
-	 * 요청 방식: POST<br>
-	 * EndPoint: /singnup<br>
-	 * @param userInfo 사용자 정보로 {"name":"", "email":"", "pwd":""}를 body에 넣어서 요청 <br>
-	 * @return CODE:200 BODY: {"date": LocalDateTime,"massage": "회원가입 완료"}
-	 * @throws IDOverlapException CODE:409 BODY: {"timeStamp": "yyyy-MM-dd HH:mm:ss","endPoint": "uri=/signup","errorDetails":["이미 사용중인 Email입니다."]}<br>
-	 * MethodArgumentNotValidException <br>
-	 * CODE:400 BODY: {"timeStamp": "yyyy-MM-dd HH:mm:ss","endPoint": "uri=/signup","errorDetails":["이름을 입력해주세요", "이메일을 입력해주세요", "이메일 형식으로 입력해 주세요", "8자 이상글자에 적어도 하나의 특수문자, 영문자, 숫자를 포함해야 합니다."]}<br>
-	 * 유효성 검증 실패
-	 * UserEntity클래스 참고
+	 * 회원가입 컨트롤러
 	 */
 	@PostMapping("/signup")
 	@Operation(summary = "회원 가입 api")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "가입 성공"),
 			@ApiResponse(responseCode = "409", description = "이미 사용중인 메일"),
-			@ApiResponse(responseCode = "404", description = "가입 실패"),
-			@ApiResponse(responseCode = "400", description = "유효성 없는 데이터 요청")
+			@ApiResponse(responseCode = "400", description = "유효성 없는 데이터 요청"),
+			@ApiResponse(responseCode = "500", description = "서버 오류")
 	})
 	public ResponseEntity<SuccessMessage> joinProcess(@Valid @RequestBody UserDTO userInfo) {
-		
-		return joinService.joinService(userInfo);
-		
+		int result = joinService.joinService(userInfo);
+		if(result == 1) {
+			return new ResponseEntity<SuccessMessage>(new SuccessMessage(cTime.getTime(),"회원가입 완료"), HttpStatus.OK);
+		}
+		else if(result == 2){
+			return new ResponseEntity<SuccessMessage>(new SuccessMessage(cTime.getTime(),"이미 사용중인 메일 입니다."), HttpStatus.CONFLICT);			
+		}
+		else{
+			return new ResponseEntity<SuccessMessage>(new SuccessMessage(cTime.getTime(),"서버 오류"), HttpStatus.INTERNAL_SERVER_ERROR);	
+		}
 	}
 	
 	/**
-	 * 요청 방식: GET<br>
-	 * EndPoint: /emailcheck/만들려는 이메일<br>
-	 * @param email 주소에 입력한 이메일<br>
-	 * @return CODE: 200 BODY: {"timeStamp": "yyyy-MM-dd HH:mm:ss,"message": "사용가능한 Email입니다."} <br> 
-	 * CODE: 409 BODY: {"timeStamp": "yyyy-MM-dd HH:mm:ss","endPoint": "uri=/emailcheck/메일","errorDetails":["이미 사용중인 Email입니다."]}
+	 * 이메일 중복 검사 컨트롤러
 	 */
 	@GetMapping("/emailcheck/{email}")
 	@Operation(summary = "이메일 중복검사 api", description = "임시 가입기능 제공")
@@ -71,7 +66,12 @@ public class JoinMembershipController {
 	})
 	public ResponseEntity<?> EmailDuplicateVerificationController(@PathVariable("email") String email){
 		
-		return joinService.EmailDuplicateVerificationService(email);
+		if(joinService.EmailDuplicateVerificationService(email)) {
+			return new ResponseEntity<SuccessMessage>(new SuccessMessage(cTime.getTime(),"사용가능한 Email입니다."), HttpStatus.OK);
+		}
+		else{
+			return new ResponseEntity<SuccessMessage>(new SuccessMessage(cTime.getTime(),"이미 사용중인 메일 입니다."), HttpStatus.CONFLICT);
+		}
 		
 	}
 	

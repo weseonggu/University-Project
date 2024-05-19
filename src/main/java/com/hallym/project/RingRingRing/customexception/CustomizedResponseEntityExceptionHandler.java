@@ -3,6 +3,7 @@ package com.hallym.project.RingRingRing.customexception;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -43,31 +44,9 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 		return new ResponseEntity<FailMessage>(message,HttpStatus.NOT_FOUND);
 	}
 	
-	/**
-	 * 가입 요청시 아미 아이디가 있으면 발생하는 요청
-	 * @param ex
-	 * @param request
-	 * @return ErrorDetails 객체와 상채 코드가 있는 ResponseEntity가 리턴
-	 * @throws Exception
-	 */
-	@ExceptionHandler(IDOverlapException.class)
-	public final ResponseEntity<FailMessage> handleSQLIntegrityConstraintViolationException(Exception ex, WebRequest request)throws Exception{
-		FailMessage message = new FailMessage(rTime.getTime(), request.getDescription(false), List.of(ex.getMessage()));
-		return new ResponseEntity<FailMessage>(message, HttpStatus.CONFLICT);
-	}
+
 	
-	/**
-	 * 가입 실패시 예외처리
-	 * @param ex
-	 * @param request
-	 * @return ErrorDetails 객체와 상채 코드가 있는 ResponseEntity가 리턴
-	 * @throws Exception
-	 */
-	@ExceptionHandler(JoinFailException.class)
-	public final ResponseEntity<FailMessage> handleJoinFailException(Exception ex, WebRequest request)throws Exception{
-		FailMessage message = new FailMessage(rTime.getTime(), request.getDescription(false), List.of(ex.getMessage()));
-		return new ResponseEntity<FailMessage>(message, HttpStatus.CONFLICT);
-	}
+
 	
 	@ExceptionHandler(MailSendFailException.class)
 	public final ResponseEntity<FailMessage> handleMailSendFailException(Exception ex, WebRequest request)throws Exception{
@@ -122,5 +101,16 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     public ResponseEntity<FailMessage> handleExpiredJwtException(Exception ex, WebRequest request) {
 		FailMessage message = new FailMessage(rTime.getTime(), request.getDescription(false), List.of("토큰 기간이 만료되었습니다."));
     	return new ResponseEntity<FailMessage>(message, HttpStatus.UNAUTHORIZED);
+    }
+    
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<FailMessage> handleRuntimeException(Exception ex, WebRequest request) {
+    	FailMessage message = new FailMessage(rTime.getTime(), request.getDescription(false), List.of(ex.getMessage()));
+		return new ResponseEntity<FailMessage>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @ExceptionHandler(DataAccessException.class)
+    public ResponseEntity<FailMessage> handleDataAccessException(Exception ex, WebRequest request) {
+    	FailMessage message = new FailMessage(rTime.getTime(), request.getDescription(false), List.of(ex.getMessage()));
+		return new ResponseEntity<FailMessage>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

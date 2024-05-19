@@ -13,9 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.hallym.project.RingRingRing.Entity.AuthorityEntity;
-import com.hallym.project.RingRingRing.Entity.UserEntity;
-import com.hallym.project.RingRingRing.login.CustomUserDetails;
+import com.hallym.project.RingRingRing.joinmember.entity.AuthorityEntity;
+import com.hallym.project.RingRingRing.joinmember.entity.UserEntity;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

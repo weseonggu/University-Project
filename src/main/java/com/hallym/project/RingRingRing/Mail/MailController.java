@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hallym.project.RingRingRing.DTO.MailCodeDTO;
-import com.hallym.project.RingRingRing.repository.MailRepository;
+import com.hallym.project.RingRingRing.Mail.DTO.MailCodeDTO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

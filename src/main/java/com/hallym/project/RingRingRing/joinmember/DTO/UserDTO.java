@@ -1,4 +1,4 @@
-package com.hallym.project.RingRingRing.DTO;
+package com.hallym.project.RingRingRing.joinmember.DTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;

@@ -13,9 +13,9 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.hallym.project.RingRingRing.filter.LoginFilter;
 import com.hallym.project.RingRingRing.jwt.JWTFilter;
 import com.hallym.project.RingRingRing.jwt.JWTUtil;
+import com.hallym.project.RingRingRing.jwt.LoginFilter;
 
 import lombok.RequiredArgsConstructor;
 /**
@@ -56,7 +56,6 @@ public class RingRRSecurityConfig {
 
 		http.authorizeHttpRequests((auth) -> auth
 				.requestMatchers( "/login","/signup", "/emailcheck/**","/find/**","/mailsender/**","/codecheck").permitAll()
-				.requestMatchers( "/userDelete").permitAll()// 임시
 				.requestMatchers( "/v3/**", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()// swagger
 				.requestMatchers("/aicall").hasRole("AI_CALL")
 				.requestMatchers("/usage/**").hasRole("AI_CALL")

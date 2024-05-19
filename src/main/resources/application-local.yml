@@ -5,7 +5,7 @@ spring:
   application:
     name: RingRingRing
   datasource:
-    url: jdbc:mysql://localhost:3306/ringdb
+    url: jdbc:mysql://localhost:33066/ringdb
     username: ringringring
     password: ringpwd
   jpa:
@@ -13,6 +13,7 @@ spring:
       hibernate:
     hibernate:
       ddl-auto: update
+    show-sql: true
   mail:
     host: smtp.gmail.com 
     port: 587
@@ -26,7 +27,7 @@ spring:
           starttls:
             enable: true
       
-      
+
       
     
 

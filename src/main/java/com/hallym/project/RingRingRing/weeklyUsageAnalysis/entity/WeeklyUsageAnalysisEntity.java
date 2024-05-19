@@ -1,8 +1,11 @@
-package com.hallym.project.RingRingRing.Entity;
+package com.hallym.project.RingRingRing.weeklyUsageAnalysis.entity;
+
+import java.time.LocalDateTime;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import jakarta.persistence.CascadeType;
+import com.hallym.project.RingRingRing.joinmember.entity.UserEntity;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -16,32 +19,30 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-/**
- *  DB에 저장되는 데이터로 권한 관련 정보가 저장 되어있다. 제야조건으로UserEntity랑 연결 되어 있음
- */
+
 @Entity
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "authority")
-public class AuthorityEntity {
-	/**
-	 * 기본키 로 자동 생성
-	 */
+@Table(name = "weeklyUsage")
+public class WeeklyUsageAnalysisEntity {
+
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO,generator="native")
     @GenericGenerator(name = "native",strategy = "native")
-    @Column(name="authority_id")
+    @Column(name="weeklyUsage_id")
     private Long id;
-    /**
-     * 권한 저장 형식 ROLE_...
-     */
-    private String role;
-    
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name="user_id")
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private UserEntity user;
-    
+
+    private int timestamp;
+
+    private LocalDateTime week;
+
+
+
 
 }

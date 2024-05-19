@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.hallym.project.RingRingRing.DTO.Conversation;
-
 @Service
 public class AICallService {
 	private final static String externalServerUrl = "http://127.0.0.1:8000/kogpt2-test";

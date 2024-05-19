@@ -7,9 +7,8 @@ import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import com.hallym.project.RingRingRing.DTO.MailCodeDTO;
-import com.hallym.project.RingRingRing.Entity.EmailAuthenticationEntity;
-import com.hallym.project.RingRingRing.repository.MailRepository;
+import com.hallym.project.RingRingRing.Mail.DTO.MailCodeDTO;
+import com.hallym.project.RingRingRing.Mail.entity.EmailAuthenticationEntity;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

@@ -1,11 +1,11 @@
-package com.hallym.project.RingRingRing.repository;
+package com.hallym.project.RingRingRing.joinmember.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.hallym.project.RingRingRing.Entity.UserEntity;
+import com.hallym.project.RingRingRing.joinmember.entity.UserEntity;
 
 import jakarta.transaction.Transactional;
 

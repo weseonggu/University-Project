@@ -1,4 +1,4 @@
-package com.hallym.project.RingRingRing.repository;
+package com.hallym.project.RingRingRing.weeklyUsageAnalysis;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -8,8 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.hallym.project.RingRingRing.DTO.WeeklyUsageDTO;
-import com.hallym.project.RingRingRing.Entity.WeeklyUsageAnalysisEntity;
+import com.hallym.project.RingRingRing.weeklyUsageAnalysis.entity.WeeklyUsageAnalysisEntity;
 
 @Repository
 public interface WeeklyUsageRepository extends JpaRepository<WeeklyUsageAnalysisEntity, Long> {

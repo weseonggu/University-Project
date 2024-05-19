@@ -11,11 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Service;
 
-import com.hallym.project.RingRingRing.DTO.WeeklyUsageDTO;
-import com.hallym.project.RingRingRing.Entity.UserEntity;
+import com.hallym.project.RingRingRing.joinmember.entity.UserEntity;
+import com.hallym.project.RingRingRing.joinmember.repository.UserRepository;
 import com.hallym.project.RingRingRing.message.WeeklyUsageMessage;
-import com.hallym.project.RingRingRing.repository.UserRepository;
-import com.hallym.project.RingRingRing.repository.WeeklyUsageRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.hallym.project.RingRingRing.filter;
+package com.hallym.project.RingRingRing.jwt;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -16,10 +16,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hallym.project.RingRingRing.DTO.UserDTO;
-import com.hallym.project.RingRingRing.Entity.UserEntity;
-import com.hallym.project.RingRingRing.jwt.JWTUtil;
-import com.hallym.project.RingRingRing.login.CustomUserDetails;
+import com.hallym.project.RingRingRing.joinmember.DTO.UserDTO;
+import com.hallym.project.RingRingRing.joinmember.entity.UserEntity;
 import com.hallym.project.RingRingRing.message.Message;
 
 import jakarta.servlet.FilterChain;
@@ -99,10 +97,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         response.setStatus(HttpStatus.OK.value());
         
         UserDTO user = new UserDTO(customUserDetails.getUserEntity().getId(),customUserDetails.getUserEntity().getName(),customUserDetails.getUsername(),null);
-//        MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(user);
-//        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.filterOutAllExcept("pwd");
-//        FilterProvider filters =  new SimpleFilterProvider().addFilter("LoginFilter", filter);
-//        mappingJacksonValue.setFilters(filters);
 
         
         ObjectMapper objectMapper = new ObjectMapper();

@@ -1,9 +1,8 @@
-package com.hallym.project.RingRingRing.DTO;
+package com.hallym.project.RingRingRing.weeklyUsageAnalysis.DTO;
 
 import java.time.LocalDateTime;
 
-import com.hallym.project.RingRingRing.Entity.UserEntity;
-import com.hallym.project.RingRingRing.Entity.WeeklyUsageAnalysisEntity;
+import com.hallym.project.RingRingRing.joinmember.entity.UserEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

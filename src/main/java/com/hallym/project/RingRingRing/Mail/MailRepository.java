@@ -1,11 +1,11 @@
-package com.hallym.project.RingRingRing.repository;
+package com.hallym.project.RingRingRing.Mail;
 import java.util.List;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.hallym.project.RingRingRing.Entity.EmailAuthenticationEntity;
+import com.hallym.project.RingRingRing.Mail.entity.EmailAuthenticationEntity;
 
 import jakarta.transaction.Transactional;
 @Repository

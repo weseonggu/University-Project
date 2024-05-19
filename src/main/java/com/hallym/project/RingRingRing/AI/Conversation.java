@@ -1,4 +1,4 @@
-package com.hallym.project.RingRingRing.DTO;
+package com.hallym.project.RingRingRing.AI;
 
 import java.util.List;
 

@@ -1,10 +1,11 @@
-package com.hallym.project.RingRingRing.Entity;
+package com.hallym.project.RingRingRing.joinmember.entity;
 
 import java.util.Set;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hallym.project.RingRingRing.weeklyUsageAnalysis.entity.WeeklyUsageAnalysisEntity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

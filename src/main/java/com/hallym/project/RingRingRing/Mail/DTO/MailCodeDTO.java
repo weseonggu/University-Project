@@ -1,4 +1,4 @@
-package com.hallym.project.RingRingRing.DTO;
+package com.hallym.project.RingRingRing.Mail.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

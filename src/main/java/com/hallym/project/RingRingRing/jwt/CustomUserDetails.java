@@ -1,4 +1,4 @@
-package com.hallym.project.RingRingRing.login;
+package com.hallym.project.RingRingRing.jwt;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -8,8 +8,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.hallym.project.RingRingRing.Entity.AuthorityEntity;
-import com.hallym.project.RingRingRing.Entity.UserEntity;
+import com.hallym.project.RingRingRing.joinmember.entity.AuthorityEntity;
+import com.hallym.project.RingRingRing.joinmember.entity.UserEntity;
 
 public class CustomUserDetails implements UserDetails{
 	/**

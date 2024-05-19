@@ -1,4 +1,4 @@
-package com.hallym.project.RingRingRing.login;
+package com.hallym.project.RingRingRing.jwt;
 
 import java.util.List;
 
@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.hallym.project.RingRingRing.Entity.UserEntity;
-import com.hallym.project.RingRingRing.repository.UserRepository;
+import com.hallym.project.RingRingRing.joinmember.entity.UserEntity;
+import com.hallym.project.RingRingRing.joinmember.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

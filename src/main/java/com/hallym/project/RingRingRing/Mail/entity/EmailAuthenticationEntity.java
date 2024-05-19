@@ -1,4 +1,4 @@
-package com.hallym.project.RingRingRing.Entity;
+package com.hallym.project.RingRingRing.Mail.entity;
 
 import java.time.LocalDateTime;
 
