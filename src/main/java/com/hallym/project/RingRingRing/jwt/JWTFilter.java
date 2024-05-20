@@ -98,6 +98,9 @@ public class JWTFilter extends OncePerRequestFilter {
     	}
     	else if( request.getServletPath().equals("/codecheck")) {
     		return true;
+    	}    	
+    	else if( request.getServletPath().equals("/login")) {
+    		return true;
     	}
     	else if(request.getRequestURI().startsWith("/emailcheck/")) {
     		return true;

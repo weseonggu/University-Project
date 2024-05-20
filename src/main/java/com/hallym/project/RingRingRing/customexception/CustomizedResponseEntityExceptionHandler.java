@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -110,6 +111,12 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     }
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<FailMessage> handleDataAccessException(Exception ex, WebRequest request) {
+    	FailMessage message = new FailMessage(rTime.getTime(), request.getDescription(false), List.of(ex.getMessage()));
+		return new ResponseEntity<FailMessage>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
+    @ExceptionHandler(AuthenticationServiceException.class)
+    public ResponseEntity<FailMessage> handleAuthenticationServiceException(Exception ex, WebRequest request) {
     	FailMessage message = new FailMessage(rTime.getTime(), request.getDescription(false), List.of(ex.getMessage()));
 		return new ResponseEntity<FailMessage>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }

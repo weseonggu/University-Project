@@ -7,6 +7,8 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,7 +19,14 @@ public class LoggingAspectOfJoinMember {
 	// 요청
     @Before("execution(* com.hallym.project.RingRingRing.joinmember.JoinMembershipController.*(..))")
     public void logControllerBefore(JoinPoint joinPoint) {
-        log.info("[Request]: {} ", joinPoint.getSignature());
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes != null) {
+            log.info("[Join Request]: ip: {} Resources Accessed: {} ", attributes.getRequest().getRemoteAddr(),joinPoint.getSignature());
+        }
+        else {
+        	
+        	log.info("[Join Request]: {}",joinPoint.getSignature());
+        }
     }
     // 프로제세스 시작
     @Before("execution(* com.hallym.project.RingRingRing.joinmember.JoinMembershipService.*(..))")
@@ -25,7 +34,7 @@ public class LoggingAspectOfJoinMember {
         log.info("[Processing Start]: {} ", joinPoint.getSignature());
     }
     // DB 트렌젝션 시작
-    @Before("execution(* com.hallym.project.RingRingRing.joinmember.repository.UserRepository.*(..))")
+    @Before("execution(* com.hallym.project.RingRingRing.joinmember.repository.*.*(..))")
     public void logRepositoryBefore(JoinPoint joinPoint) {
         log.info("[DB Transaction Start]: {} ", joinPoint.getSignature());
     }
@@ -33,7 +42,13 @@ public class LoggingAspectOfJoinMember {
     // 응답
     @After("execution(* com.hallym.project.RingRingRing.joinmember.JoinMembershipController.*(..))")
     public void logControllerAfter(JoinPoint joinPoint) {
-        log.info("[Response]: {} ", joinPoint.getSignature());
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes != null) {
+            log.info("[Join Response]: {} {} ", attributes.getRequest().getRemoteAddr(),joinPoint.getSignature());
+        }else {
+        	
+        	log.info("[Join Response]: {}",joinPoint.getSignature());
+        }
     }
     // 프로세스 끝
     @After("execution(* com.hallym.project.RingRingRing.joinmember.JoinMembershipService.*(..))")
@@ -41,7 +56,7 @@ public class LoggingAspectOfJoinMember {
         log.info("[Processing End]: {} ", joinPoint.getSignature());
     }
     // 트렌잭션 끝
-    @After("execution(* com.hallym.project.RingRingRing.joinmember.repository.UserRepository.*(..))")
+    @After("execution(* com.hallym.project.RingRingRing.joinmember.repository.*.*(..))")
     public void logRepositoryAfter(JoinPoint joinPoint) {
         log.info("[DB Transaction End]: {} ", joinPoint.getSignature());
     }
@@ -58,7 +73,7 @@ public class LoggingAspectOfJoinMember {
         log.info("[Normal Processing End]: {} ", joinPoint.getSignature());
     }
     // 트렌잭션 끝 정상
-    @AfterReturning("execution(* com.hallym.project.RingRingRing.joinmember.repository.UserRepository.*(..))")
+    @AfterReturning("execution(* com.hallym.project.RingRingRing.joinmember.repository.*.*(..))")
     public void logRepositoryAfterReturning(JoinPoint joinPoint) {
     	log.info("[Normal DB Transaction End]: {} ", joinPoint.getSignature());
     }
@@ -74,7 +89,7 @@ public class LoggingAspectOfJoinMember {
         log.error("[Exception caught]: ", exception);
     }
     
-    @AfterThrowing(pointcut = "execution(* com.hallym.project.RingRingRing.joinmember.repository.UserRepository.*(..))", throwing = "exception")
+    @AfterThrowing(pointcut = "execution(* com.hallym.project.RingRingRing.joinmember.repository.*.*(..))", throwing = "exception")
     public void logRepositoryAfterThrowing(RuntimeException exception) {
         log.error("[Exception caught]: ", exception);
     }

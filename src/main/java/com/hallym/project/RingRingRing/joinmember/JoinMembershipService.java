@@ -56,10 +56,10 @@ public class JoinMembershipService {
 					.pwd(passwordEncoder.encode(userInfo.getPwd())).build();
 
 			userRepository.save(user);
-			int i =1;
-			if(i==1) {
-				throw new RuntimeException();
-			}
+//			int i =1;
+//			if(i==1) {
+//				throw new RuntimeException();
+//			}
 			AuthorityEntity authority = AuthorityEntity.builder().role("ROLE_AI_CALL")
 					.user(userRepository.findByEmail(userInfo.getEmail()).get(0)).build();
 
@@ -160,5 +160,7 @@ public class JoinMembershipService {
 		}
 
 	}
+	
+	
 
 }

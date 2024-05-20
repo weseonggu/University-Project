@@ -20,6 +20,8 @@
 #    password: ringringring
 
 
-
+spring:
+  profiles:
+    active: local
 
 

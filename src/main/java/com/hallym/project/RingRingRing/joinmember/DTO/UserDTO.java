@@ -1,5 +1,7 @@
 package com.hallym.project.RingRingRing.joinmember.DTO;
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -11,6 +13,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonFilter("loginFilter")
 public class UserDTO {
 	
 	private Long id;

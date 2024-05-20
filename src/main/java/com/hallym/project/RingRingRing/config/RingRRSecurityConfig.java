@@ -11,10 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.hallym.project.RingRingRing.jwt.JWTFilter;
-import com.hallym.project.RingRingRing.jwt.JWTUtil;
 import com.hallym.project.RingRingRing.jwt.LoginFilter;
 
 import lombok.RequiredArgsConstructor;
@@ -26,18 +24,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RingRRSecurityConfig {
 
-	private final AuthenticationConfiguration authenticationConfiguration;
+//	private final AuthenticationConfiguration authenticationConfiguration;
 	private final AuthenticationEntryPoint entryPoint;
-	private final JWTUtil jwtUtil;
+//	private final JWTUtil jwtUtil;
 
 
 	@Bean
-	public PasswordEncoder passwordEncoder() {
+	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 	// AuthenticationManager Bean 등록
 	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+	AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
 
 		return configuration.getAuthenticationManager();
 	}
@@ -55,13 +53,13 @@ public class RingRRSecurityConfig {
 		http.addFilterAfter(new JWTFilter(), LoginFilter.class);
 
 		http.authorizeHttpRequests((auth) -> auth
-				.requestMatchers( "/login","/signup", "/emailcheck/**","/find/**","/mailsender/**","/codecheck","/usage/**","/save").permitAll()
+				.requestMatchers( "/login","/signup", "/emailcheck/**","/find/**","/mailsender/**","/codecheck","/save").permitAll()
 				.requestMatchers( "/v3/**", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()// swagger
 				.requestMatchers("/aicall").hasRole("AI_CALL")
 				.requestMatchers("/usage/**").hasRole("AI_CALL")
 				.requestMatchers("/kogpt2").hasRole("AI_CALL")
 				.anyRequest().authenticated());
-		http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration),jwtUtil), UsernamePasswordAuthenticationFilter.class);
+//		http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration),jwtUtil), UsernamePasswordAuthenticationFilter.class);
 		http.exceptionHandling(handler -> handler.authenticationEntryPoint(entryPoint));
 
 		return http.build();
