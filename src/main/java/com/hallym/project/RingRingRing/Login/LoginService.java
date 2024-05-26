@@ -19,6 +19,7 @@ import com.hallym.project.RingRingRing.joinmember.DTO.UserDTO;
 import com.hallym.project.RingRingRing.joinmember.entity.AuthorityEntity;
 import com.hallym.project.RingRingRing.joinmember.entity.UserEntity;
 import com.hallym.project.RingRingRing.joinmember.repository.UserRepository;
+import com.hallym.project.RingRingRing.jwt.JWTConstants;
 import com.hallym.project.RingRingRing.jwt.JWTUtil;
 import com.hallym.project.RingRingRing.message.Message;
 
@@ -34,6 +35,8 @@ public class LoginService {
 	private final PasswordEncoder passwordEncoder;
 	
 	private final JWTUtil jwtUtil;
+	
+	private static final Long EXPIRATION_TIME = JWTConstants.EXPIRATION_TIME;
 	
 	
 	/**
@@ -54,9 +57,9 @@ public class LoginService {
 			if(isExistsUser(user_info, user_info_at_DB.getPwd())) {
 				String roles = populateAuthorities(user_info_at_DB.getAuthorities());
 				
-				
 				// 토큰 생성 만료시간 30000000 8시간 정도
-				String token = jwtUtil.createJwt(user_info_at_DB.getEmail(), roles, 30000000L);
+				String token = jwtUtil.createJwt(user_info_at_DB.getId(), user_info_at_DB.getEmail(), roles, EXPIRATION_TIME);
+				
 				UserDTO user = new UserDTO(
 						user_info_at_DB.getId()
 						,user_info_at_DB.getName()
@@ -72,7 +75,7 @@ public class LoginService {
 				mappingJacksonValue.setFilters(filters);
 				
 				HttpHeaders headers = new HttpHeaders();
-		        headers.add("Authorization", "Bearer " + token);
+		        headers.add("Authorization", token);
 
 				
 				return new ResponseEntity<MappingJacksonValue>(mappingJacksonValue, headers, HttpStatus.OK);

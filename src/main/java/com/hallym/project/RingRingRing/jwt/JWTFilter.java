@@ -41,38 +41,52 @@ public class JWTFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 
 		try {
-			String jwt=null;
-			try {
-				jwt = request.getHeader("Authorization").split(" ")[1];
-			} catch (NullPointerException e) {
-				throw new MalformedJwtException("토큰이 없습니다."+request.getRequestURI());
+			log.info("[인중 가 진행] ensd point: {}", request.getRequestURL());
+			String jwt = request.getHeader("Authorization");
+			if (jwt == null || jwt.equals("")) {
+				throw new NullPointerException("토큰이 없습니다.");
 			}
+			// 키 가져오기
 			SecretKey key = new SecretKeySpec(JWTConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8),
 					Jwts.SIG.HS256.key().build().getAlgorithm());
+			
+			// 토큰 유효성 검증
 			Claims claims = Jwts.parser().verifyWith(key).build().parseSignedClaims(jwt).getPayload();
-
+			
+			Long id = ((Integer) claims.get("id")).longValue();
 			String username = String.valueOf(claims.get("username"));
 			String roles = (String) claims.get("roles");
 
 			String[] authoritiesArray = roles.split(",");
+			
 			Set<AuthorityEntity> authoritiesSet = new HashSet<>();
 
 			for (String authority : authoritiesArray) {
 				AuthorityEntity auth = AuthorityEntity.builder().role(authority).build();
-
 				authoritiesSet.add(auth);
 			}
-			UserEntity userEntity = UserEntity.builder().email(username).pwd("temppassword").authorities(authoritiesSet)
+			
+			UserEntity userEntity = UserEntity.builder()
+					.id(id)
+					.email(username)
+					.pwd("temppassword")
+					.authorities(authoritiesSet)
 					.build();
 
 			CustomUserDetails customUserDetails = new CustomUserDetails(userEntity);
 
 			Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null,
 					customUserDetails.getAuthorities());
-			logger.info("JWT validation Successful: "+username+" endpoint: "+request.getRequestURI());
+			
+			
 			SecurityContextHolder.getContext().setAuthentication(authToken);
+			logger.info("[인중 가 통과]: "+username+" endpoint: "+request.getRequestURI());
 
-		} catch (MalformedJwtException e) {
+		}catch(NullPointerException e){
+			request.setAttribute("exception", e);
+			log.warn("Authorization is not found ");
+		}
+		catch (MalformedJwtException e) {
 			request.setAttribute("exception", e);
 			log.warn("JWT validation failed: " + e.getMessage());
 			return;

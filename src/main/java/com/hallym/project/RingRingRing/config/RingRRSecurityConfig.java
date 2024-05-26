@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class RingRRSecurityConfig {
 
 //	private final AuthenticationConfiguration authenticationConfiguration;
@@ -53,11 +55,9 @@ public class RingRRSecurityConfig {
 		http.addFilterAfter(new JWTFilter(), LoginFilter.class);
 
 		http.authorizeHttpRequests((auth) -> auth
-				.requestMatchers( "/login","/signup", "/emailcheck/**","/find/**","/mailsender/**","/codecheck","/save").permitAll()
+				.requestMatchers( "/login","/signup", "/emailcheck/**","/find/**","/mailsender/**","/codecheck").permitAll()
 				.requestMatchers( "/v3/**", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()// swagger
-				.requestMatchers("/aicall").hasRole("AI_CALL")
-				.requestMatchers("/usage/**").hasRole("AI_CALL")
-				.requestMatchers("/kogpt2").hasRole("AI_CALL")
+				.requestMatchers("/aicall", "/usage/**", "/save", "/kogpt2").hasRole("AI_CALL")
 				.anyRequest().authenticated());
 //		http.addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration),jwtUtil), UsernamePasswordAuthenticationFilter.class);
 		http.exceptionHandling(handler -> handler.authenticationEntryPoint(entryPoint));

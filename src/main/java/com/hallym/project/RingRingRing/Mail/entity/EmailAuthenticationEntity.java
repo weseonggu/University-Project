@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Table(name = "email_authentication")
 public class EmailAuthenticationEntity {
     @Id
@@ -29,6 +29,8 @@ public class EmailAuthenticationEntity {
     private String email;
     
     private int code;
+    
+    private boolean isCheckCode;
     
     private LocalDateTime timeStamp;
 }

@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Deprecated
 public class CustomUserDetilasService implements UserDetailsService{
 	
 	private final UserRepository userRepository;

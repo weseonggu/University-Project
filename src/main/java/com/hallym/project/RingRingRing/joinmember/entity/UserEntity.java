@@ -4,7 +4,6 @@ import java.util.Set;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hallym.project.RingRingRing.weeklyUsageAnalysis.entity.WeeklyUsageAnalysisEntity;
 
 import jakarta.persistence.CascadeType;
@@ -17,9 +16,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,36 +42,19 @@ public class UserEntity {
 	@Column(name="user_id")
 	private Long id;
 	
-	/**
-	 * 사용자이름 속성 null값 입력시 MethodArgumentNotValidException
-	 */
-	@NotNull(message = "이름을 입력해주세요")
-	@Column(nullable = false)
+
 	private String name;
 	
-	/**
-	 * 사용자이름 속성 null값 입력또는 이메일 형식이 아니면 MethodArgumentNotValidException
-	 */
-	@NotNull(message = "이메일을 입력해주세요")
-	@Email(message = "이메일 형식으로 입력해 주세요")
-	@Column(nullable = false)
+
 	private String email;
 	
-	/**
-	 * 사용자이름 속성 null값입력 또는 조건식에 틀리면 MethodArgumentNotValidException
-	 */
-	@NotNull
-	@Pattern(regexp = "^(?=.*[!@#$%^&*(),.?\\\":{}|<>])(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$", 
-			message = "8자 이상글자에 적어도 하나의 특수문자, 영문자, 숫자를 포함해야 합니다.")
-	@Column(nullable = false)
+
 	private String pwd;
 	
-    @OneToMany(mappedBy="user",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @JsonIgnore
+    @OneToMany(mappedBy="user",cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     private Set<AuthorityEntity> authorities;
 
-	@JsonIgnore
-	@OneToMany(mappedBy="user",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy="user",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	private Set<WeeklyUsageAnalysisEntity> weeklyUsages;
     
 }

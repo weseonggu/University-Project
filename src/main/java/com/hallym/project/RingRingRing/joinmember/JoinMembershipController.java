@@ -40,6 +40,7 @@ public class JoinMembershipController {
 			@ApiResponse(responseCode = "200", description = "가입 성공"),
 			@ApiResponse(responseCode = "409", description = "이미 사용중인 메일"),
 			@ApiResponse(responseCode = "400", description = "유효성 없는 데이터 요청"),
+			@ApiResponse(responseCode = "400", description = "이메일 인증 안함"),
 			@ApiResponse(responseCode = "500", description = "서버 오류")
 	})
 	public ResponseEntity<SuccessMessage> joinProcess(@Valid @RequestBody UserDTO userInfo) {
@@ -49,6 +50,9 @@ public class JoinMembershipController {
 		}
 		else if(result == 2){
 			return new ResponseEntity<SuccessMessage>(new SuccessMessage(cTime.getTime(),"이미 사용중인 메일 입니다."), HttpStatus.CONFLICT);			
+		}
+		else if(result == 3){
+			return new ResponseEntity<SuccessMessage>(new SuccessMessage(cTime.getTime(),"이메일 인증을 해주세요"), HttpStatus.BAD_REQUEST);			
 		}
 		else{
 			return new ResponseEntity<SuccessMessage>(new SuccessMessage(cTime.getTime(),"서버 오류"), HttpStatus.INTERNAL_SERVER_ERROR);	

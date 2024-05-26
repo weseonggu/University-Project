@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.hallym.project.RingRingRing.joinmember.entity.AuthorityEntity;
 import com.hallym.project.RingRingRing.joinmember.entity.UserEntity;
-
 public class CustomUserDetails implements UserDetails{
 	/**
 	 * 

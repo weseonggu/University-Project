@@ -26,17 +26,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "authority")
 public class AuthorityEntity {
-	/**
-	 * 기본키 로 자동 생성
-	 */
+
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO,generator="native")
     @GenericGenerator(name = "native",strategy = "native")
     @Column(name="authority_id")
     private Long id;
-    /**
-     * 권한 저장 형식 ROLE_...
-     */
+
     private String role;
     
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

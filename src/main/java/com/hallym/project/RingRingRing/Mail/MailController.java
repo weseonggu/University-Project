@@ -46,7 +46,7 @@ public class MailController {
 	public ResponseEntity<String> codeCheck(@RequestBody MailCodeDTO mailCode) {
 		
 		if(mailService.codeVerification(mailCode)) {
-			mailRepository.deleteByEmail(mailCode.getEmail());
+//			mailRepository.deleteByEmail(mailCode.getEmail());
 			return new ResponseEntity<String>("메일 인증 성공", HttpStatus.OK);
 		}
 		else {	

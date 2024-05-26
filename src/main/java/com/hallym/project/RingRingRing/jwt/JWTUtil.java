@@ -22,10 +22,11 @@ public class JWTUtil {
 	 * @param expiredMs 토큰 유효 시간 8시간 정도
 	 * @return
 	 */
-	public String createJwt(String username, String roles, Long expiredMs) {
+	public String createJwt(Long id, String username, String roles, Long expiredMs) {
     	
     	SecretKey secretKey = Keys.hmacShaKeyFor(JWTConstants.JWT_KEY.getBytes(StandardCharsets.UTF_8));
         return Jwts.builder()
+        		.claim("id", id)
                 .claim("username", username)
                 .claim("roles", roles) // 역할 정보를 JSON 배열로 설정
                 .issuedAt(new Date(System.currentTimeMillis()))

@@ -3,12 +3,14 @@ package com.hallym.project.RingRingRing.joinmember;
 import java.time.LocalDateTime;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.hallym.project.RingRingRing.Mail.MailRepository;
 import com.hallym.project.RingRingRing.joinmember.DTO.UserDTO;
 import com.hallym.project.RingRingRing.joinmember.entity.AuthorityEntity;
 import com.hallym.project.RingRingRing.joinmember.entity.TemporaryEmail;
@@ -36,37 +38,43 @@ public class JoinMembershipService {
 
 	private final TemporaryEmailRepository temporaryEmailRepository;
 
+	private final MailRepository mailRepository;
 	/**
 	 * 회원가입 서비스
 	 * 
 	 * @param userInfo 컨트롤러에서 받아온 UserEntity객체
-	 * @return int 1: 성공, 2: 이미 사용중인 아이디 3:예외
+	 * @return int 1: 성공, 2: 이미 사용중인 아이디 3: 이메일 검증 아나함
 	 * @throws DataAccessException, RuntimeException
 	 */
 	@Transactional(rollbackFor = { RuntimeException.class, DataAccessException.class })
 	public int joinService(UserDTO userInfo) {
 
-		if (userRepository.existsByEmail(userInfo.getEmail())) {
-			return 2;// 이미 가입자
-		}
+		
 
 		try {
+			if (userRepository.existsByEmail(userInfo.getEmail())) {
+				return 2;// 이미 가입자
+			}
 
+			boolean is = mailRepository.findByEmail(userInfo.getEmail(), Sort.by(Sort.Direction.DESC, "id")).get(0).isCheckCode();
+			if (is == false) {
+				return 3;// 이메일 검증 아나함
+			}
+			
 			UserEntity user = UserEntity.builder().name(userInfo.getName()).email(userInfo.getEmail())
 					.pwd(passwordEncoder.encode(userInfo.getPwd())).build();
 
 			userRepository.save(user);
-//			int i =1;
-//			if(i==1) {
-//				throw new RuntimeException();
-//			}
 			AuthorityEntity authority = AuthorityEntity.builder().role("ROLE_AI_CALL")
 					.user(userRepository.findByEmail(userInfo.getEmail()).get(0)).build();
 
 			authorityRepository.save(authority);
-
+			mailRepository.deleteByEmail(userInfo.getEmail());
 			return 1;
 
+		}catch (IndexOutOfBoundsException e) {
+			return 3;
+			
 		}catch (DataAccessException e) {
 			throw new RuntimeException(e);
 		} catch (RuntimeException e) {
@@ -97,13 +105,10 @@ public class JoinMembershipService {
 			}
 			
 		}catch (DataAccessException e) {
-			// TODO: handle exception
 			throw new RuntimeException(e);
 		}catch (RuntimeException e) {
-			// TODO: handle exception
 			throw new RuntimeException(e);
 		}catch (Exception e) {
-			// TODO: handle exception
 			throw e;
 		}
 		
@@ -120,18 +125,15 @@ public class JoinMembershipService {
 			temporaryEmailRepository.deleteOlderThanTenMinutes(tenMinutesAgo);
 
 		} catch (DataAccessException e) {
-			// TODO: handle exception
 			throw new RuntimeException(e);
 		}catch (RuntimeException e) {
-			// TODO: handle exception
 			throw new RuntimeException(e);
 		}catch (Exception e) {
-			// TODO: handle exception
 			throw e;
 		}
 	}
 
-	/*
+	/**
 	 * 사용자 삭제
 	 */
 	@Transactional(rollbackFor = { RuntimeException.class, DataAccessException.class })
@@ -149,13 +151,10 @@ public class JoinMembershipService {
 				return 3;
 			}
 		} catch (DataAccessException e) {
-			// TODO: handle exception
 			throw new RuntimeException(e);
 		}catch (RuntimeException e) {
-			// TODO: handle exception
 			throw new RuntimeException(e);
 		}catch (Exception e) {
-			// TODO: handle exception
 			throw e;
 		}
 
