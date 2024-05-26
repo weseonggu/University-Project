@@ -15,9 +15,11 @@ public class CustomUserDetails implements UserDetails{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private final Long id;
 	private UserEntity userEntity;
 	public CustomUserDetails(UserEntity userEntity) {
 		this.userEntity = userEntity;
+		this.id = userEntity.getId();
 	}
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -31,6 +33,9 @@ public class CustomUserDetails implements UserDetails{
 	}
 	public UserEntity getUserEntity() {
 		return userEntity;
+	}
+	public Long getId() {
+		return id;
 	}
 	@Override
 	public String getPassword() {

@@ -28,16 +28,26 @@ public class AICallController {
 	 * @param talk
 	 * @return
 	 */
-	@GetMapping("/aicall/{email}")
-	@PreAuthorize("isAuthenticated() && principal.username == #email")
-	public String call(@PathVariable("email") String email) {
+//	@GetMapping("/aicall/{email}")
+//	@PreAuthorize("isAuthenticated() && principal.username == #email")
+//	public String call(@PathVariable("email") String email) {
+//		
+//	    log.info("접근 성공");
+//	    String name = SecurityContextHolder.getContext().getAuthentication().getName();
+//	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//	    CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+//	    Long id = userDetails.getUserEntity().getId();
+//	    return "id: "+ userDetails.getId() +" email: "+name;
+//	}
+	@GetMapping("/aicall/{id}")
+	@PreAuthorize("isAuthenticated() && principal.getId() == #id")
+	public String call(@PathVariable("id") Long id) {
 		
 	    log.info("접근 성공");
 	    String name = SecurityContextHolder.getContext().getAuthentication().getName();
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	    CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-	    Long id = userDetails.getUserEntity().getId();
-	    return "id: "+ id +" email: "+name;
+	    return "id: "+ userDetails.getId() +" email: "+name;
 	}
 	@PostMapping("kogpt2")
 	public ResponseEntity<String> createSentence(@RequestBody Conversation talk_data ) {
