@@ -2,6 +2,9 @@ package com.hallym.project.RingRingRing.joinmember;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hallym.project.RingRingRing.joinmember.DTO.UserDTO;
+import com.hallym.project.RingRingRing.jwt.CustomUserDetails;
 import com.hallym.project.RingRingRing.message.CurrentTime;
 import com.hallym.project.RingRingRing.message.SuccessMessage;
 
@@ -85,8 +89,14 @@ public class JoinMembershipController {
 			@ApiResponse(responseCode = "200", description = "탈퇴 성공"),
 			@ApiResponse(responseCode = "400", description = "비번이 틀리거나 다른이유로 실패")
 	})
-	@PostMapping("userDelete")
+	@PostMapping("/userDelete")
+	@PreAuthorize("isAuthenticated() && principal.getId() == #userinfo.getId()")
 	public ResponseEntity<String> deleteUser(@RequestBody UserDTO userinfo){
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		System.out.println(userDetails.getId());
+		
+		System.out.println(userinfo.getId());
 		
 		int resault = joinService.deleteUserService(userinfo);
 		

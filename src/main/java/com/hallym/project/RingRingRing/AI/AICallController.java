@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hallym.project.RingRingRing.jwt.CustomUserDetails;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,9 +52,24 @@ public class AICallController {
 	    CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 	    return "id: "+ userDetails.getId() +" email: "+name;
 	}
-	@PostMapping("kogpt2")
+	@PostMapping("/deliveryAI")
+	@Operation(summary = "배달 ai api")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "생성된 문장")
+	})
 	public ResponseEntity<String> createSentence(@RequestBody Conversation talk_data ) {
 		String newSentence = aICallService.fastAPIRequest(talk_data);
 		return new ResponseEntity<String>(newSentence,HttpStatus.OK);
+	}
+	
+	@GetMapping("/isconnected")
+	@PostMapping("/deliveryAI")
+	@Operation(summary = "서버 연결 확인 api")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "연결되었습니다.")
+	})
+	public String check() {
+		
+		return aICallService.fastAPIIsConnected();
 	}
 }

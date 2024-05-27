@@ -140,9 +140,6 @@ public class JoinMembershipService {
 	public int deleteUserService(UserDTO userInfo) {
 		try {
 			UserEntity user = userRepository.findById(userInfo.getId()).get();
-			if (!user.getEmail().equals(userInfo.getEmail())) {
-				return 1;// 삭제할 이메일과 DB의 메일이 틀림
-			}
 
 			if (passwordEncoder.matches(userInfo.getPwd(), user.getPwd())) {
 				userRepository.deleteById(userInfo.getId());
