@@ -87,38 +87,38 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authentication) {
 
-		CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-
-		String username = customUserDetails.getUsername();
-
-		String strRoles = populateAuthorities(authentication.getAuthorities());
-
-		// 토큰 생성 만료시간 30000000
-		String token = jwtUtil.createJwt(username, strRoles.toString(), 30000000L);
-
-		response.setHeader("Authorization", "Bearer " + token);
-		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		response.setCharacterEncoding("UTF-8");
-		response.setStatus(HttpStatus.OK.value());
-
-		UserDTO user = new UserDTO(customUserDetails.getUserEntity().getId(),
-				customUserDetails.getUserEntity().getName(), customUserDetails.getUsername(), null);
-
-		ObjectMapper objectMapper = new ObjectMapper();
-		try {
-			
-			int i = 1;
-			if(i==1) {
-				throw new IOException();
-			}
-			
-			objectMapper.writeValue(response.getWriter(), user);
-			log.info("[login Successful]:  {} {}", request.getRemoteAddr(),username);
-		} catch (IOException e) {
-			response.setHeader("Authorization", "");
-			response.setStatus(HttpStatus.BAD_REQUEST.value());
-			logger.error("Failed to write JSON response: " + e.getMessage());
-		}
+//		CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+//
+//		String username = customUserDetails.getUsername();
+//
+//		String strRoles = populateAuthorities(authentication.getAuthorities());
+//
+//		// 토큰 생성 만료시간 30000000
+//		String token = jwtUtil.createJwt(customUserDetails.getId(),username, strRoles.toString(), 30000000L);
+//
+//		response.setHeader("Authorization", "Bearer " + token);
+//		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//		response.setCharacterEncoding("UTF-8");
+//		response.setStatus(HttpStatus.OK.value());
+//
+//		UserDTO user = new UserDTO(customUserDetails.getUserEntity().getId(),
+//				customUserDetails.getUserEntity().getName(), customUserDetails.getUsername(), null);
+//
+//		ObjectMapper objectMapper = new ObjectMapper();
+//		try {
+//			
+//			int i = 1;
+//			if(i==1) {
+//				throw new IOException();
+//			}
+//			
+//			objectMapper.writeValue(response.getWriter(), user);
+//			log.info("[login Successful]:  {} {}", request.getRemoteAddr(),username);
+//		} catch (IOException e) {
+//			response.setHeader("Authorization", "");
+//			response.setStatus(HttpStatus.BAD_REQUEST.value());
+//			logger.error("Failed to write JSON response: " + e.getMessage());
+//		}
 	}
 
 	/**
