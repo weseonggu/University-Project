@@ -16,7 +16,7 @@ public interface WeeklyUsageRepository extends JpaRepository<WeeklyUsageAnalysis
 
     @Query(value = "SELECT SUM(w.timestamp) as duration, AVG(w.timestamp) as average " +
             "from WeeklyUsageAnalysisEntity as w " +
-            "where w.user.email= :email " +
+            "where w.user.id= :id " +
             "and w.week between :start and :end ")
-    Map<String, Object> findWeeklyUsageByEmailAndTimestampBetween(@Param("email") String email, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+    Map<String, Object> findWeeklyUsageByIdAndTimestampBetween(@Param("id") Long id , @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 }
