@@ -58,7 +58,7 @@ public class JoinMembershipService {
 
 			boolean is = mailRepository.findByEmail(userInfo.getEmail(), Sort.by(Sort.Direction.DESC, "id")).get(0).isCheckCode();
 			if (is == false) {
-				return 3;// 이메일 검증 아나함
+				return 3;// 이메일 검증 유무 확인
 			}
 			
 			UserEntity user = UserEntity.builder().name(userInfo.getName()).email(userInfo.getEmail())

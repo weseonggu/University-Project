@@ -84,4 +84,29 @@ public class AICallService {
             );
         return responseEntity.getBody();
 	}
+
+	public String fastAPIReservation(Conversation sendData) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<Conversation> requestEntity = new HttpEntity<>(sendData, headers);
+		
+		
+		try {
+            ResponseEntity<String> responseEntity = restTemplate.exchange(
+                    externalServerUrl + "/reservation-chat",
+                    HttpMethod.POST,
+                    requestEntity,
+                    String.class
+            );
+            return responseEntity.getBody();
+        } catch (RestClientException e) {
+            // 타임아웃 예외 처리
+            System.err.println("Request timed out: " + e.getMessage());
+            return "Request timed out";
+        } catch (Exception e) {
+            // 기타 예외 처리
+            System.err.println("Request failed: " + e.getMessage());
+            return "Request failed";
+        }
+	}
 }

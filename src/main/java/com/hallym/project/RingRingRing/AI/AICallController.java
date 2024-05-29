@@ -42,25 +42,50 @@ public class AICallController {
 //	    Long id = userDetails.getUserEntity().getId();
 //	    return "id: "+ userDetails.getId() +" email: "+name;
 //	}
-	@GetMapping("/aicall/{id}")
-	@PreAuthorize("isAuthenticated() && principal.getId() == #id")
-	public String call(@PathVariable("id") Long id) {
-		
-	    log.info("접근 성공");
-	    String name = SecurityContextHolder.getContext().getAuthentication().getName();
-	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-	    return "id: "+ userDetails.getId() +" email: "+name;
-	}
+//	@GetMapping("/aicall/{id}")
+//	@PreAuthorize("isAuthenticated() && principal.getId() == #id")
+//	public String call(@PathVariable("id") Long id) {
+//		
+//	    log.info("접근 성공");
+//	    String name = SecurityContextHolder.getContext().getAuthentication().getName();
+//	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//	    CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+//	    return "id: "+ userDetails.getId() +" email: "+name;
+//	}
 	@PostMapping("/deliveryAI")
 	@Operation(summary = "배달 ai api")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "생성된 문장")
+			@ApiResponse(responseCode = "200", description = "생성된 문장"),
+			@ApiResponse(responseCode = "500", description = "문장생성 시간 초과")
 	})
 	public ResponseEntity<String> createSentence(@RequestBody Conversation talk_data ) {
 		String newSentence = aICallService.fastAPIRequest(talk_data);
-		return new ResponseEntity<String>(newSentence,HttpStatus.OK);
+		if(newSentence.equals("Request timed out") || newSentence.equals("Request failed")) {
+			return new ResponseEntity<String>(newSentence,HttpStatus.INTERNAL_SERVER_ERROR);			
+		}
+		else {
+			return new ResponseEntity<String>(newSentence,HttpStatus.OK);			
+			
+		}
 	}
+	
+	@PostMapping("/reservationAI")
+	@Operation(summary = "예약 ai api")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "생성된 문장"),
+			@ApiResponse(responseCode = "500", description = "문장생성 시간 초과")
+	})
+	public ResponseEntity<String> reservationCreateSentence(@RequestBody Conversation talk_data ) {
+		String newSentence = aICallService.fastAPIReservation(talk_data);
+		if(newSentence.equals("Request timed out") || newSentence.equals("Request failed")) {
+			return new ResponseEntity<String>(newSentence,HttpStatus.INTERNAL_SERVER_ERROR);			
+		}
+		else {
+			return new ResponseEntity<String>(newSentence,HttpStatus.OK);			
+			
+		}
+	}
+	
 	
 	@GetMapping("/isconnected")
 	@PostMapping("/deliveryAI")
