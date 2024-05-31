@@ -31,3 +31,4 @@ build/
 
 ### VS Code ###
 .vscode/
+logs/app.2024-05-27.log
