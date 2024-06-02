@@ -48,5 +48,4 @@ ELB를 사용한 트래픽 분산<br>
 
 > 시연 연상
 
-[![Video Label](https://youtu.be/QX9Z_rL9_b4/0.jpg)](https://youtu.be/QX9Z_rL9_b4)
-<iframe width="956" height="538" src="https://youtu.be/QX9Z_rL9_b4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![Video Label](http://img.youtube.com/vi/QX9Z_rL9_b4/0.jpg)](https://youtu.be/QX9Z_rL9_b4)
