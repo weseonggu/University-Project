@@ -17,4 +17,4 @@
 * EC2
 * RDS
 > 시스템 아키텍처
-<img src="./img/ringringring.PNG"/>
+<img src="./img/ringringring.png"/>
